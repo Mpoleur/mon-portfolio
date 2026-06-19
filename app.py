@@ -11,7 +11,7 @@ def get_databricks_connection():
     return sql.connect(
         server_hostname="dbc-bfa6bdfc-bac2.cloud.databricks.com", 
         http_path="/sql/1.0/warehouses/dcae3895e63dfcf2",
-        access_token=os.environ.get("DATABRICKS_CLIENT_TOKEN") # <--- L'astuce est là !
+        access_token=os.environ.get("dapi0036e9500bc2cbc1ff6ad590fc724d25") # <--- L'astuce est là !
     )
 
 try:
