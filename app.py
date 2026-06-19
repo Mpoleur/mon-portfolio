@@ -1,33 +1,32 @@
 import os
 import streamlit as st
 import pandas as pd
-from databricks import sql
+from sqlalchemy import create_engine
 
 st.title("📊 Mon Portefeuille en Direct")
 
 @st.cache_resource
-def get_databricks_connection():
-    # On force l'authentification par Token (PAT) pour éviter l'erreur OAuth 400
-    return sql.connect(
-        server_hostname="dbc-bfa6bdfc-bac2.cloud.databricks.com", 
-        http_path="/sql/1.0/warehouses/dcae3895e63dfcf2",
-        auth_type="pat", 
-        access_token=os.environ.get("MON_TOKEN_SECRET") # Récupéré de l'Étape A
-    )
+def get_dataframe():
+    # 1. On récupère les variables cachées de l'Étape 2
+    host = os.environ.get("DB_HOST")
+    path = os.environ.get("DB_PATH")
+    token = os.environ.get("DB_TOKEN")
+    
+    # 2. On crée une URL de connexion universelle (SQLAlchemy)
+    # Cette syntaxe force l'utilisation du Token (PAT) et ignore l'OAuth de Databricks
+    connection_url = f"databricks://token:{token}@{host}?http_path={path}"
+    
+    # 3. On se connecte et on lit la table
+    engine = create_engine(connection_url)
+    query = "SELECT * FROM workspace.default.portfolio_view"
+    
+    return pd.read_sql(query, engine)
 
 try:
-    input_table = "workspace.default.portfolio_view"
-    
-    connection = get_databricks_connection()
-    with connection.cursor() as cursor:
-        cursor.execute(f"SELECT * FROM {input_table}")
-        result = cursor.fetchall()
-        column_names = [desc[0] for desc in cursor.description]
-    
-    df_portfolio = pd.DataFrame(result, columns=column_names)
-    
+    # Récupération et affichage direct
+    df_portfolio = get_dataframe()
     st.write("Voici ton portefeuille en direct de Databricks :")
     st.dataframe(df_portfolio)
 
 except Exception as e:
-    st.error(f"Erreur lors de la récupération des données : {e}")
+    st.error(f"Erreur de connexion à la base de données : {e}")
