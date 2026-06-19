@@ -1,7 +1,7 @@
 import os
 import streamlit as st
 import pandas as pd
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 
 st.title("📊 Mon Portefeuille en Direct")
 
@@ -14,9 +14,13 @@ def get_dataframe():
     connection_url = f"databricks://token:{token}@{host}?http_path={path}"
     engine = create_engine(connection_url)
     
-    # Avec SQLAlchemy, pandas lit directement sans cursor ni fetchall !
-    query = "SELECT * FROM workspace.default.portfolio_view"
-    return pd.read_sql(query, engine)
+    # On force une exécution SQL pure via SQLAlchemy, sans laisser Pandas toucher à la connexion
+    query = text("SELECT * FROM workspace.default.portfolio_view")
+    with engine.connect() as conn:
+        result = conn.execute(query)
+        # On extrait les données et les colonnes proprement
+        df = pd.DataFrame(result.fetchall(), columns=result.keys())
+    return df
 
 try:
     df_portfolio = get_dataframe()
