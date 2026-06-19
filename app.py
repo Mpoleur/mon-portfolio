@@ -9,8 +9,8 @@ st.title("📊 Mon Portefeuille en Direct")
 @st.cache_resource
 def get_databricks_connection():
     return sql.connect(
-        server_hostname=os.environ.get("DATABRICKS_SERVER_HOSTNAME"),
-        http_path=os.environ.get("DATABRICKS_HTTP_PATH"),
+        server_hostname=os.environ.get("dbc-dfa4bdfc-bac2.cloud.databricks.com"),
+        http_path=os.environ.get("/sql/1.0/warehouses/984a09b701253a55"),
         access_token=os.environ.get("DATABRICKS_CLIENT_TOKEN") # Token temporaire généré par l'app
     )
 
