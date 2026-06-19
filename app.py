@@ -7,18 +7,23 @@ st.title("📊 Mon Portefeuille en Direct")
 
 @st.cache_resource
 def get_dataframe():
-    host = os.environ.get("DB_HOST")
-    path = os.environ.get("DB_PATH")
+    # On récupère les variables exactes visibles sur ton écran (image_dba768.png)
+    host = os.environ.get("DATABRICKS_HOST")
+    
+    # Construction automatique du HTTP Path avec l'ID du Workspace de ton écran
+    workspace_id = os.environ.get("DATABRICKS_WORKSPACE_ID")
+    path = f"/sql/1.0/warehouses/{workspace_id}" 
+    
+    # Le token secret que tu as mis dans l'onglet Settings de ton App
     token = os.environ.get("DB_TOKEN")
     
+    # Connexion propre via SQLAlchemy
     connection_url = f"databricks://token:{token}@{host}?http_path={path}"
     engine = create_engine(connection_url)
     
-    # On force une exécution SQL pure via SQLAlchemy, sans laisser Pandas toucher à la connexion
     query = text("SELECT * FROM workspace.default.portfolio_view")
     with engine.connect() as conn:
         result = conn.execute(query)
-        # On extrait les données et les colonnes proprement
         df = pd.DataFrame(result.fetchall(), columns=result.keys())
     return df
 
