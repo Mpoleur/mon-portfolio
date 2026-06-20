@@ -1,6 +1,5 @@
 command: [
   "streamlit", 
   "run",
-  "app.py",
-  "pandas"
+  "app.py"
 ]
