@@ -4,24 +4,18 @@ import pandas as pd
 from databricks import sql
 from databricks.sdk.core import Config, oauth_service_principal
 
+#set up de la page streamlit
 st.set_page_config(
     # Title and icon for the browser's tab bar:
     page_title="Portfolio",
     page_icon="📊",
     # Make the content take up the width of the page:
     layout="wide",
-    initial_sidebar_state="expanded",
-    menu_items={
-        'Get Help': 'https://www.extremelycoolapp.com/help',
-        'Report a bug': "https://www.extremelycoolapp.com/bug",
-        'About': "# This is a header. This is an *extremely* cool app!"
-    }
 )
 
-st.title("📊 Mon Portefeuille en Direct")
-"""##Compare"""
+# routine pour chercher une table avec connection à la db
 @st.cache_resource
-def get_dataframe():
+def get_dataframe(selection):
     host = os.environ.get("DATABRICKS_HOST")
     http_path = "/sql/1.0/warehouses/984a09b701253a55"
     client_id = os.environ.get("DATABRICKS_CLIENT_ID")
@@ -39,14 +33,11 @@ def get_dataframe():
         credentials_provider=lambda: oauth_service_principal(config),
     ) as connection:
         with connection.cursor() as cursor:
-            cursor.execute("SELECT * FROM workspace.default.portfolio_view")
+            cursor.execute(selection)
             df = cursor.fetchall_arrow().to_pandas()
     return df
 
-try:
-    df_portfolio = get_dataframe()
-    st.write("Voici ton portefeuille en direct de Databricks :")
-    st.dataframe(df_portfolio)
-
-except Exception as e:
-    st.error(f"Erreur de connexion à la base de données : {e}")
+selection = "SELECT * FROM workspace.default.portfolio_view"
+df_portfolio = get_dataframe(selection)
+st.write("Voici ton portefeuille en direct de Databricks :")
+st.dataframe(df_portfolio)
