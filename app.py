@@ -3,21 +3,18 @@ import streamlit as st
 import pandas as pd
 from sqlalchemy import create_engine, text
 
-st.title("📊 Mon Portefeuille en Direct")
+st.title("📊 Mon Portefeuille en Directm")
 
 @st.cache_resource
 def get_dataframe():
-    # On récupère les variables exactes visibles sur ton écran (image_dba768.png)
-    host = os.environ.get("DATABRICKS_HOST")
+    # Adresses exactes tirées de ton écran de variables
+    host = "dbc-dfa4bdfc-bac2.cloud.databricks.com"
+    path = "/sql/1.0/warehouses/984a09b701253a55"
     
-    # Construction automatique du HTTP Path avec l'ID du Workspace de ton écran
-    workspace_id = os.environ.get("DATABRICKS_WORKSPACE_ID")
-    path = f"/sql/1.0/warehouses/{workspace_id}" 
-    
-    # Le token secret que tu as mis dans l'onglet Settings de ton App
+    # On utilise la variable système native générée automatiquement par Databricks
+    # Pas besoin de créer de variable 'DB_TOKEN', l'app possède déjà celle-ci !
     token = os.environ.get("DATABRICKS_CLIENT_TOKEN")
     
-    # Connexion propre via SQLAlchemy
     connection_url = f"databricks://token:{token}@{host}?http_path={path}"
     engine = create_engine(connection_url)
     
