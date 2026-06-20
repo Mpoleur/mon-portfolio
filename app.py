@@ -15,7 +15,7 @@ def get_dataframe():
     path = f"/sql/1.0/warehouses/{workspace_id}" 
     
     # Le token secret que tu as mis dans l'onglet Settings de ton App
-    token = os.environ.get("DB_TOKEN")
+    token = os.environ.get("DATABRICKS_CLIENT_TOKEN")
     
     # Connexion propre via SQLAlchemy
     connection_url = f"databricks://token:{token}@{host}?http_path={path}"
