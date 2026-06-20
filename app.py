@@ -84,7 +84,7 @@ with row2[1]:
 
 dropdown = st.selectbox(
     "Details on one ticker?",
-    (df_portfolio["ticker"].unique()),
+    (df_portfolio[df_portfolio["status"]=="Open"]["ticker"].unique()),
 )
 
 
@@ -125,7 +125,7 @@ dsell = df_portfolio[df_portfolio["ticker"]==dropdown]["sell"].sum().round(2)
 dbuy = df_portfolio[df_portfolio["ticker"]==dropdown]["buy"].sum().round(2)
 dremaining = df_portfolio[df_portfolio["ticker"]==dropdown]["remaining"].sum().round(2)
 drealized = df_portfolio[df_portfolio["ticker"]==dropdown]["realized"].sum().round(2)
-
+dbreakpoint = df_portfolio[df_portfolio["ticker"]==dropdown]["break_price"].sum().round(2)
 
 
 # affichage en tableau
@@ -147,4 +147,13 @@ with row4[2]:
 
 row5 = st.columns(3, gap = "xsmall")
 with row5[0]:
-    st.write("Unrealized : ", dremaining * ecurrent_price ," €")
+    st.write("Unrealized : ", round(dremaining * ecurrent_price,2) ," €")
+with row5[1]:
+    st.write("Break price : ", dbreakpoint, " €")
+with row5[2]:
+    if ycurrency == "USD":
+        st.write("Break price in ",ycurrency, round(dbreakpoint/eUSD,2))
+    elif ycurrency =="NOK":
+        st.write("Break price in ",ycurrency, round(dbreakpoint/eNOK,2))
+    else:
+        pass
