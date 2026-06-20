@@ -4,6 +4,20 @@ import pandas as pd
 from databricks import sql
 from databricks.sdk.core import Config, oauth_service_principal
 
+st.set_page_config(
+    # Title and icon for the browser's tab bar:
+    page_title="Portfolio",
+    page_icon="📊",
+    # Make the content take up the width of the page:
+    layout="wide",
+    initial_sidebar_state="expanded",
+    menu_items={
+        'Get Help': 'https://www.extremelycoolapp.com/help',
+        'Report a bug': "https://www.extremelycoolapp.com/bug",
+        'About': "# This is a header. This is an *extremely* cool app!"
+    }
+)
+
 st.title("📊 Mon Portefeuille en Direct")
 
 @st.cache_resource
