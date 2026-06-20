@@ -19,7 +19,7 @@ st.set_page_config(
 )
 
 st.title("📊 Mon Portefeuille en Direct")
-
+"""##Compare"""
 @st.cache_resource
 def get_dataframe():
     host = os.environ.get("DATABRICKS_HOST")
