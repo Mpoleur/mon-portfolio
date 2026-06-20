@@ -105,13 +105,17 @@ eNOK = yNOK.info.get('regularMarketPrice')
 
 #conversion USD, NOK to EUR
 if ycurrency == "USD":
+    ecurrent_price = round(current_price * eUSD,2)
     st.write("You selected:", dropdown ," - ", yname , " its current price is : " ,round(current_price * eUSD,2), ' in EUR - ',current_price, " in ", ycurrency)
 elif ycurrency == "NOK":
+    ecurrent_price = round(current_price * eUSD,2)
     st.write("You selected:", dropdown ," - ", yname , " its current price is : " ,round(current_price * eNOK,2), ' in EUR - ',current_price, " in ", ycurrency)
 elif ycurrency == "EUR":
+    ecurrent_price = current_price
     st.write("You selected:", dropdown ," - ", yname , " its current price is : " ,current_price, " in ", ycurrency)
 else:
-    current_price == 0
+    current_price = 0
+    ecurrent_price = 0
 
 # compute spcific variable
 
@@ -140,3 +144,7 @@ with row4[1]:
     st.write("Bougth : ", dbuy, "€")
 with row4[2]:
     st.write("Sold : ", dsell, "€")
+
+row5 = st.columns(3, gap = "xsmall")
+with row5[0]:
+    st.write("Unrealized : ", dremaining * ecurrent_price ," €")
