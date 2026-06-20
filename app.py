@@ -1,6 +1,7 @@
 import os
 import streamlit as st
 import pandas as pd
+import yfinance as yf
 from databricks import sql
 from databricks.sdk.core import Config, oauth_service_principal
 
@@ -42,11 +43,100 @@ st.title("📊 Mon Portefeuille en Direct")
 select1 = "select * from workspace.default.portfolio_view"
 df_portfolio = get_dataframe(select1)
 st.write("Voici ton portefeuille en direct de Databricks :")
-st.dataframe(df_portfolio)
+status = df_portfolio["status"].unique()
+selected_status = st.pills(
+    "Sélection de status: ", status, default="Open", selection_mode="multi"
+)
+df_filtered_port=df_portfolio[df_portfolio["status"].isin(selected_status)]
+st.dataframe(df_filtered_port)
 
 # call input
-
 select2 = "select * from workspace.default.portfolio"
 df_raw = get_dataframe(select2)
+
+# slection de la date via des bulles
+YEARS = df_raw["transaction_year"].unique()
+selected_years = st.pills(
+    "Years to compare", YEARS, default=YEARS.max(), selection_mode="multi"
+)
+df_filtered_raw = df_raw[df_raw["transaction_year"].isin(selected_years)]
+
 st.write("Voici tes raw data :")
-st.dataframe(df_raw)
+buy = df_filtered_raw[df_filtered_raw["transaction_type"]=="Buy"]["total"].sum().round(2)
+dividend = df_filtered_raw[df_filtered_raw["transaction_type"]=="Dividend"]["total"].sum().round(2)
+option = df_filtered_raw[df_filtered_raw["transaction_type"]=="Option"]["total"].sum().round(2)
+sell = df_filtered_raw[df_filtered_raw["transaction_type"]=="Sell"]["total"].sum().round(2)
+
+# affichage en tableau
+row1 = st.columns(2,gap="xsmall")
+with row1[0]:
+    st.write("Option : ", option, "€")
+with row1[1]:
+    st.write("Dividend : ", dividend, "€")
+
+row2 = st.columns(2, gap="xsmall")
+with row2[0]:
+    st.write("Buy : ", buy, "€")
+with row2[1]:
+    st.write("Sell : ", sell, "€")
+
+# dropdown specific
+
+dropdown = st.selectbox(
+    "Details on one ticker?",
+    (df_portfolio["ticker"].unique()),
+)
+
+
+# On interroge Yahoo Finance pour ce ticker
+stat_ticker = yf.Ticker(dropdown)
+# get info from yahoo for selected ticker
+current_price = stat_ticker.info.get('currentPrice')
+ycurrency = stat_ticker.info.get('currency')
+yname = stat_ticker.info.get('shortName')
+
+#Daily market price USD
+yUSD = stat_ticker = yf.Ticker("USDEUR=X")
+eUSD = yUSD.info.get('regularMarketPrice')
+
+#Daily market price NOK
+yNOK = stat_ticker = yf.Ticker("NOKEUR=X")
+eNOK = yNOK.info.get('regularMarketPrice')
+
+#conversion USD, NOK to EUR
+if ycurrency == "USD":
+    st.write("You selected:", dropdown ," - ", yname , " its current price is : " ,round(current_price * eUSD,2), ' in EUR - ',current_price, " in ", ycurrency)
+elif ycurrency == "NOK":
+    st.write("You selected:", dropdown ," - ", yname , " its current price is : " ,round(current_price * eNOK,2), ' in EUR - ',current_price, " in ", ycurrency)
+elif ycurrency == "EUR":
+    st.write("You selected:", dropdown ," - ", yname , " its current price is : " ,current_price, " in ", ycurrency)
+else:
+    current_price == 0
+
+# compute spcific variable
+
+doption = df_portfolio[df_portfolio["ticker"]==dropdown]["option"].sum().round(2)
+ddividend = df_portfolio[df_portfolio["ticker"]==dropdown]["dividend"].sum().round(2)
+dsell = df_portfolio[df_portfolio["ticker"]==dropdown]["sell"].sum().round(2)
+dbuy = df_portfolio[df_portfolio["ticker"]==dropdown]["buy"].sum().round(2)
+dremaining = df_portfolio[df_portfolio["ticker"]==dropdown]["remaining"].sum().round(2)
+drealized = df_portfolio[df_portfolio["ticker"]==dropdown]["realized"].sum().round(2)
+
+
+
+# affichage en tableau
+row3 = st.columns(3,gap="xsmall")
+with row3[0]:
+    st.write("Option : ", doption, "€")
+with row3[1]:
+    st.write("Dividend : ", ddividend, "€")
+with row3[2]:
+    st.write("Remaining : ", dremaining)
+
+row4 = st.columns(3,gap="xsmall")
+with row4[0]:
+    st.write("Realized : ", drealized, "€")
+with row4[1]:
+    st.write("Bougth : ", dbuy, "€")
+with row4[2]:
+    st.write("Sold : ", dsell, "€")
