@@ -2,6 +2,7 @@ import os
 import streamlit as st
 import pandas as pd
 from databricks import sql
+from databricks.sdk.core import Config, oauth_service_principal
 
 st.title("📊 Mon Portefeuille en Direct")
 
@@ -12,12 +13,16 @@ def get_dataframe():
     client_id = os.environ.get("DATABRICKS_CLIENT_ID")
     client_secret = os.environ.get("DATABRICKS_CLIENT_SECRET")
 
+    config = Config(
+        host=f"https://{host}",
+        client_id=client_id,
+        client_secret=client_secret,
+    )
+
     with sql.connect(
         server_hostname=host,
         http_path=http_path,
-        auth_type="oauth-m2m",
-        oauth_client_id=client_id,
-        oauth_client_secret=client_secret,
+        credentials_provider=lambda: oauth_service_principal(config),
     ) as connection:
         with connection.cursor() as cursor:
             cursor.execute("SELECT * FROM workspace.default.portfolio_view")
