@@ -6,7 +6,7 @@ from databricks import sql
 from databricks.sdk.core import Config, oauth_service_principal
 
 # routine pour chercher une table avec connection à la db
-@st.cache_resource
+@st.cache_data
 def get_dataframe(selection):
     host = os.environ.get("DATABRICKS_HOST")
     http_path = "/sql/1.0/warehouses/984a09b701253a55"
