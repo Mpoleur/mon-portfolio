@@ -70,9 +70,9 @@ with st.form("Add new price",enter_to_submit=False,clear_on_submit=True):
         ) as connection:
             with connection.cursor() as cursor:
                 cursor.execute(
-                    "INSERT INTO workspace.default.comparator_input (item, store, price, quantity, metrics) VALUES (%(item)s, %(store)s, %(price)s, %(quantity)s, %(metrics)s)",
-                    (item, store, price, quantity, metrics)
-                )
+                        "INSERT INTO workspace.default.comparator_input (item, store, price, quantity, metrics) VALUES (%(item)s, %(store)s, %(price)s, %(quantity)s, %(metrics)s)",
+                        {"item": item, "store": store, "price": price, "quantity": quantity, "metrics": metrics}
+                    )
             st.success(f"Prix de {price}  ajouté pour {item} chez {store} !")
             st.cache_data.clear()
             st.badge("Success", icon=":material/check:", color="green")
