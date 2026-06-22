@@ -75,5 +75,9 @@ if item is not None and store is not None and price is not None and quantity is 
                 )
             st.success(f"Prix de {price}  ajouté pour {item} chez {store} !")
             st.cache_data.clear()
+            st.badge("Success", icon=":material/check:", color="green")
+    else:
+        st.badge("⚠️ Needs review",  color="orange")
+        st.write("Erreur de mise à jour")
 else:
     st.write("all data must be encoded prior submit")
