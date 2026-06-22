@@ -51,7 +51,7 @@ with st.form("Add new price",enter_to_submit=False,clear_on_submit=True):
     quantity = round(st.number_input("Quantity: ", min_value=0.00, step=1.00),2)
     metrics = st.selectbox("Metrics: ",["Kg","g","u"])
     submitted = st.form_submit_button("➕Add data")
-if item is not None and store is not None and price is not None and quantity is not None and metrics is not None:
+
     if submitted:
         host = os.environ.get("DATABRICKS_HOST")
         http_path = "/sql/1.0/warehouses/984a09b701253a55"
@@ -77,5 +77,3 @@ if item is not None and store is not None and price is not None and quantity is 
             st.cache_data.clear()
             st.badge("Success", icon=":material/check:", color="green")
 
-else:
-    st.write("all data must be encoded prior submit")
