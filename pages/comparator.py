@@ -76,6 +76,6 @@ with st.form("Add new price",enter_to_submit=False,clear_on_submit=True):
             st.success(f"Prix de {price}  ajouté pour {item} chez {store} !")
             st.cache_data.clear()
             st.badge("Success", icon=":material/check:", color="green")
-st.cache_data.clear()
-st.rerun()
+            st.cache_data.clear()
+            st.rerun()
 
