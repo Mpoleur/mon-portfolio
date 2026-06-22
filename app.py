@@ -9,7 +9,7 @@ with col1:
     st.subheader("📊 Portfolio Tracker")
     st.write("Suivi de mes investissements")
     if st.button("Ouvrir Portfolio"):
-        st.switch_page("portfolio.py")
+        st.switch_page("pages/portfolio.py")
 
 with col2:
     st.subheader("📋 Job Tracker")
