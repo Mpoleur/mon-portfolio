@@ -10,6 +10,8 @@ st.set_page_config(
 
 st.title("🛠️My toolbar")
 st.write("Choisis l'app que tu veux ouvrir :")
+image_url = "https://media.forgecdn.net/avatars/thumbnails/1031/807/256/256/638554680736765570.png"
+
 
 col1, col2, col3 = st.columns(3)
 
@@ -33,3 +35,12 @@ with col3:
         st.write("Price comparator in Taiwan")
         if st.button("Ouvrir comparateur"):
             st.switch_page("pages/comparator.py")
+
+st.column_config.Column(alignment="Left")
+col4, col5, col6 = st.columns(3)
+with col4:
+    st.image(image_url, width=200,link="pages/portfolio.py")
+with col5:
+    st.image(image_url, width=200)
+with col6:
+    st.image(image_url, width=200)
