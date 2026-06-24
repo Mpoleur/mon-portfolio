@@ -30,7 +30,7 @@ def get_dataframe(selection):
 
 #function highlight row
 def highlight_min_row(row):
-    is_min = row["unit_price"] == df_select["unit_price"].min()
+    is_min = row["unit_price"] == df_display["unit_price"].min()
     return ['background-color: green' if is_min else '' for _ in row]
 
 #set up de la page streamlit
@@ -49,38 +49,39 @@ df_input = get_dataframe(select1)
 
 # display and compute dataframe based on input
 df_compute = df_input.copy()
-df_compute.loc[df_compute["metrics"] == "u", "unit_price"] = round(df_compute["price"]/df_compute["quantity"],2)
-df_compute.loc[df_compute["metrics"] == "g", "unit_price"] = round(df_compute["price"]/df_compute["quantity"]*100,2)
-df_compute.loc[df_compute["metrics"] == "Kg", "unit_price"] = round(df_compute["price"]/df_compute["quantity"]/10,2)
-df_compute.loc[df_compute["metrics"] == "l", "unit_price"] = round(df_compute["price"]/df_compute["quantity"]/10,2)
-df_compute.loc[df_compute["metrics"] == "u", "measure"] = "/ unit"
-df_compute.loc[df_compute["metrics"] == "g", "measure"] = "/ 100g"
-df_compute.loc[df_compute["metrics"] == "Kg", "measure"] = "/ 100g"
-df_compute.loc[df_compute["metrics"] == "l", "measure"] = "/ liter"
+df_compute.loc[df_compute["metric"] == "u", "unit_price"] = round(df_compute["price"]/df_compute["quantity"],2)
+df_compute.loc[df_compute["metric"] == "g", "unit_price"] = round(df_compute["price"]/df_compute["quantity"]*100,2)
+df_compute.loc[df_compute["metric"] == "Kg", "unit_price"] = round(df_compute["price"]/df_compute["quantity"]/10,2)
+df_compute.loc[df_compute["metric"] == "l", "unit_price"] = round(df_compute["price"]/df_compute["quantity"]/10,2)
+df_compute.loc[df_compute["metric"] == "u", "measure"] = "/ unit"
+df_compute.loc[df_compute["metric"] == "g", "measure"] = "/ 100g"
+df_compute.loc[df_compute["metric"] == "Kg", "measure"] = "/ 100g"
+df_compute.loc[df_compute["metric"] == "l", "measure"] = "/ liter"
 
-# creation and selection of df_display
-df_display = df_compute[["item","store","unit_price","measure"]].copy()
 
 # select one item
 dropdown = st.selectbox(
-    "Details on one ticker?",
-    (df_display["item"].unique()),
+    "Sélectionne un produit",
+    (df_compute["item"].unique()),
 )
-df_select = df_display[df_display["item"]==dropdown]
+
+df_display = df_compute[["item","store","unit_price","measure"]][df_compute["item"]==dropdown]
 
 #display intput selected by dropdown
-st.dataframe(df_select.style.apply(highlight_min_row, axis=1))
+st.dataframe(df_display.style.apply(highlight_min_row, axis=1)
+            .format({"unit_price": "{:.2f}"})
+            )
 
 
 
-with st.expander("Add data"):
+with st.expander("Ajouter un article"):
     with st.form("Add new price",enter_to_submit=False,clear_on_submit=True):
-        item = st.text_input("Product name: ")
-        store = st.text_input("Store: ")
-        price = round(st.number_input("Price: ", min_value=0.01, step=0.01),2)
-        quantity = round(st.number_input("Quantity: ", min_value=0.00, step=1.00),2)
-        metrics = st.selectbox("Metrics: ",["Kg","g","u","l"])
-        submitted = st.form_submit_button("➕Add data")
+        item = st.text_input("Nom de l'article: ")
+        store = st.text_input("Magasin: ")
+        price = round(st.number_input("Prix: ", min_value=0.01, step=0.01),2)
+        quantity = round(st.number_input("Quantité: ", min_value=0.00, step=1.00),2)
+        metric = st.selectbox("Métric: ",["Kg","g","u","l"])
+        submitted = st.form_submit_button("➕Ajouter l'article")
 
         if submitted:
             host = os.environ.get("DATABRICKS_HOST")
@@ -100,8 +101,8 @@ with st.expander("Add data"):
             ) as connection:
                 with connection.cursor() as cursor:
                     cursor.execute(
-                            "INSERT INTO workspace.default.comparator_input (item, store, price, quantity, metrics) VALUES (%(item)s, %(store)s, %(price)s, %(quantity)s, %(metrics)s)",
-                            {"item": item, "store": store, "price": price, "quantity": quantity, "metrics": metrics}
+                            "INSERT INTO workspace.default.comparator_input (item, store, price, quantity, metric) VALUES (%(item)s, %(store)s, %(price)s, %(quantity)s, %(metric)s)",
+                            {"item": item, "store": store, "price": price, "quantity": quantity, "metric": metric}
                         )
                 st.success(f"Prix de {price}  ajouté pour {item} chez {store} !")
                 st.cache_data.clear()
@@ -109,5 +110,5 @@ with st.expander("Add data"):
                 st.cache_data.clear()
                 st.rerun()
 
-with st.expander("See data"):
+with st.expander("Voir la DB"):
     st.dataframe(df_input)
