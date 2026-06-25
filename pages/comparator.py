@@ -1,6 +1,7 @@
 import os
 import streamlit as st
 import pandas as pd
+import numpy as np
 from databricks import sql
 from databricks.sdk.core import Config, oauth_service_principal
 
@@ -40,7 +41,7 @@ st.set_page_config(
     page_icon="🛒",
 )
 
-st.title("🛒 Comparateur de prix - Taïwan édition")
+st.title("🛒 Comparateur de prix")
 
 
 # call comparator_inpu view
@@ -74,14 +75,18 @@ st.dataframe(df_display.style.apply(highlight_min_row, axis=1)
 
 
 
+
 with st.expander("Ajouter un article"):
     with st.form("Add new price",enter_to_submit=False,clear_on_submit=True):
-        item = st.text_input("Nom de l'article: ")
-        store = st.text_input("Magasin: ")
+        item_select = st.selectbox("Nom de l'article: ", options = sorted(df_input["item"].unique()), accept_new_options = True)
+        store = st.selectbox("Magasin: ", options = sorted(df_input["store"].unique()), accept_new_options = True)
         price = round(st.number_input("Prix: ", min_value=0.01, step=0.01),2)
         quantity = round(st.number_input("Quantité: ", min_value=0.00, step=1.00),2)
         metric = st.selectbox("Métric: ",["Kg","g","u","l"])
-        submitted = st.form_submit_button("➕Ajouter l'article")
+        submitted = st.form_submit_button(
+                "Add",
+                icon=":material/add:",
+            )
 
         if submitted:
             host = os.environ.get("DATABRICKS_HOST")

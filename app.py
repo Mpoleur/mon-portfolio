@@ -24,10 +24,10 @@ with col1:
 
 with col2:
     with st.container(border=True):
-        st.subheader("📋 Job Tracker")
-        st.write("Suivi de mes candidatures")
-        if st.button("Ouvrir Job Tracker"):
-            st.switch_page("pages/2_Job_Tracker.py")
+        st.subheader("📋 Grocery list")
+        st.write("Liste de course")
+        if st.button("Ouvrir la liste de course"):
+            st.switch_page("pages/grocery.py")
 
 with col3:
     with st.container(border=True):
