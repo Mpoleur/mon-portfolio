@@ -94,7 +94,7 @@ image_Costco = "https://upload.wikimedia.org/wikipedia/commons/5/59/Costco_Whole
 # get data from sql
 selectlist = "select * from workspace.default.grocery_list"
 df_list = sql_exe(selectlist, fetch = True)
-stores = df_list["store"].unique().fillna("")
+stores = df_list["store"].unique()
 df_input = sql_exe("select distinct item from workspace.default.grocery_freq_buy", fetch = True)
 # st.dataframe(df_list)
 
