@@ -6,6 +6,7 @@ import pandas as pd
 import random 
 from databricks import sql
 from databricks.sdk.core import Config, oauth_service_principal
+from st_clickable_images import clickable_images
 
 # routine pour chercher une table avec connection à la db
 
@@ -80,14 +81,124 @@ def delete_all_checked(store):
     sql_exe(query)
     st.cache_data.clear()
 
+def remove_freq(item):
+    query=f'Delete from workspace.default.grocery_freq_buy where item = "{item}"'
+    sql_exe(query)
+    st.cache_data.clear()
+
+def add_freq_buy(item):
+    query=f'insert into workspace.default.grocery_freq_buy(item) values ("{item}")'
+    sql_exe(query)
+    st.cache_data.clear()
+
+def create_list(mag):
+    with st.expander(mag,expanded=True):
+        store = mag
+        with st.container(horizontal_alignment="center"):
+            if mag == "Costco":
+                img_url = image_Costco
+            elif mag == "Coupang":
+                img_url = image_coupang
+            elif mag == "Ikea":
+                img_url = image_ikea
+            elif mag == "PXmart":
+                img_url = image_PX
+            else:
+                img_url = image_other
+            st.image(img_url, width=100)
+            st.title(
+                f"Liste {mag}",
+                width="content",
+                anchor=False,
+            )
+
+        with st.form(key=f"form_{mag}", border=False,enter_to_submit=False,clear_on_submit=True):
+            with st.container(
+                horizontal=True,
+                vertical_alignment="bottom",
+            ):
+                item=st.selectbox(
+                    "Article: ", 
+                    options = sorted(df_input["item"].unique()), 
+                    accept_new_options = True, 
+                    label_visibility="collapsed", 
+                    placeholder="Nouvel article",
+                )
+
+                quantity=st.number_input(
+                    "Quantity",
+                    label_visibility="collapsed",
+                    placeholder="Quantité",
+                    min_value=1, step=1
+                )
+                submit=st.form_submit_button(
+                    "Add",
+                    icon=":material/add:",
+                )
+            if submit:
+                if item not in (df_list[df_list["store"]==store]["item"].unique()):
+                    add_todo(store,item,quantity)
+                    st.rerun()
+                else:
+                    st.warning("Cet article est déjà dans la liste", icon="⚠️")
+
+        if store in stores:
+            with st.container(gap=None, border=True):
+                df_store = df_list[df_list["store"]==store]
+                for i,row in df_store.iterrows():
+                    with st.container(horizontal=True, vertical_alignment="center"):
+                        col_check, col_text, col_spacer, col_delete = st.columns([1, 4, 4, 1],vertical_alignment="center")
+                        item=row["item"]
+                        check_og=row["crossed"]
+                        story=row["store"]
+                        quantity = row["quantity"]
+                        with col_check:
+                            st.checkbox(
+                                label="",
+                                value=check_og,
+                                width="content",
+                                key=f"checkbox_{item}_{story}",
+                                on_change=check_todo,
+                                args=(item,story,check_og)
+                            )
+                        with col_text:
+                            if check_og == False:
+                                st.write(f"   {quantity} x {item}")
+                            else:
+                                st.write(f"<s>   {quantity} x {item}<s>", unsafe_allow_html=True)
+                        with col_spacer:
+                            st.empty()
+                        with col_delete:
+                            st.button(
+                                ":material/delete:",
+                                type="tertiary",
+                                on_click=remove_todo,
+                                args=(item,story),
+                                key=f"delbutton_{item}_{story}",
+                            )
+
+            with st.container(horizontal=True, horizontal_alignment="center"):
+                story=df_list[df_list["store"]==store]["store"].unique()
+                st.button(
+                    ":small[Effacer la liste]",
+                    icon=":material/delete_forever:",
+                    type="tertiary",
+                    on_click=delete_all_checked,
+                    args=(story),
+                    key=f"delbutton_{story}"
+                )
+        else:
+            st.info("Pas d'article pour le moment :material/family_link:")    
 
 #############################
 #Variables
 image_PX = "https://shoplineimg.com/5cc3db30527c4b0001a30cf0/5f8bc65696b102003bd6bf54/3860x.webp"
 image_Costco = "https://upload.wikimedia.org/wikipedia/commons/5/59/Costco_Wholesale_logo_2010-10-26.svg"
-
+image_coupang = "https://www.aboutcoupang.com/wp-content/themes/aboutcp/assets/images/logo.svg"
+image_ikea =  "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Ikea_logo.svg/960px-Ikea_logo.svg.png"
+image_other = "https://us.123rf.com/450wm/grigoriyzhukov/grigoriyzhukov2503/grigoriyzhukov250300207/243689390-red-shopping-basket-filled-with-groceries-and-fresh-food-items-vector-illustration.jpg"
+mags = ["PXmart","Costco", "Coupang","Ikea", "Autre"]
 #############################
-
 
 
 
@@ -99,188 +210,82 @@ df_input = sql_exe("select distinct item from workspace.default.grocery_freq_buy
 # st.dataframe(df_list)
 
 #############################
-# Expander list PXmart
+# Check if a list exist, if yes display them
+#############################
+for store in stores:
+    create_list(store)
+
+with st.expander("Créer une nouvelle list", expanded = False):
+    with st.container(horizontal = False, border=True):
+        clicked_PXmart = -1
+        clicked_Costco = -1
+        clicked_coupang = -1
+        clicked_ikea = -1
+        clicked_other = -1
+        col1, col2, col3, col4, col5 = st.columns(5)
+        with col1:
+            if "PXmart" not in stores:
+                clicked_PXmart = clickable_images([image_PX],img_style={"margin": "5px", "width": "50px"})
+        with col2:
+            if "Costco" not in stores:
+                clicked_Costco = clickable_images([image_Costco],img_style={"margin": "5px", "width": "50px"})
+        with col3:
+            if "Coupang" not in stores:
+                clicked_coupang = clickable_images([image_coupang],img_style={"margin": "5px", "width": "50px"})
+        with col4:
+            if "Ikea" not in stores:
+                clicked_ikea = clickable_images([image_ikea],img_style={"margin": "5px", "width": "50px"})
+        with col5:
+            clicked_other = clickable_images([image_other],img_style={"margin": "5px", "width": "50px"})
+
+        if clicked_PXmart == 0:
+            create_list("PXmart")
+        if clicked_Costco == 0:
+            create_list("Costco")
+        if clicked_coupang == 0:
+            create_list("Coupang")
+        if clicked_ikea == 0:
+            create_list("Ikea")
+        if clicked_other == 0:
+            create_list("other")
+
+#############################
+# Manage Freq buy
 #############################
 
-with st.expander("PXmart",expanded=True):
-    store = "PXmart"
-    with st.container(horizontal_alignment="center"):
-        st.image(image_PX, width=100)
-        st.title(
-            "Liste PXmart",
-            width="content",
-            anchor=False,
-        )
-
-    with st.form(key="form_PXmart", border=False,enter_to_submit=False,clear_on_submit=True):
+with st.expander("Gestion des achats fréquants"):
+    with st.form(key="add_freq_buy", border=False,enter_to_submit=False,clear_on_submit=True):
         with st.container(
             horizontal=True,
             vertical_alignment="bottom",
         ):
-            item=st.selectbox(
-                "Article: ", 
-                options = sorted(df_input["item"].unique()), 
-                accept_new_options = True, 
-                label_visibility="collapsed", 
+            item=st.text_input(
+                "Nouvel article: ", 
                 placeholder="Nouvel article",
             )
 
-            quantity=st.number_input(
-                "Quantity",
-                label_visibility="collapsed",
-                placeholder="Quantité",
-                min_value=1, step=1
-            )
             submit=st.form_submit_button(
                 "Add",
                 icon=":material/add:",
             )
         if submit:
-            if item not in (df_list[df_list["store"]==store]["item"].unique()):
-                add_todo(store,item,quantity)
+            if item not in (df_input["item"].unique()):
+                add_freq_buy(item)
                 st.rerun()
             else:
                 st.warning("Cet article est déjà dans la liste", icon="⚠️")
 
-    if store in stores:
-        with st.container(gap=None, border=True):
-            df_store = df_list[df_list["store"]==store]
-            for i,row in df_store.iterrows():
-                with st.container(horizontal=True, vertical_alignment="center"):
-                    col_check, col_text, col_spacer, col_delete = st.columns([1, 4, 4, 1],vertical_alignment="center")
-                    item=row["item"]
-                    check_og=row["crossed"]
-                    story=row["store"]
-                    quantity = row["quantity"]
-                    with col_check:
-                        st.checkbox(
-                            label="",
-                            value=check_og,
-                            width="content",
-                            key=f"checkbox_{item}_{story}",
-                            on_change=check_todo,
-                            args=(item,story,check_og)
-                        )
-                    with col_text:
-                        if check_og == False:
-                            st.write(f"   {quantity} x {item}")
-                        else:
-                            st.write(f"<s>   {quantity} x {item}<s>", unsafe_allow_html=True)
-                    with col_spacer:
-                        st.empty()
-                    with col_delete:
-                        st.button(
-                            ":material/delete:",
-                            type="tertiary",
-                            on_click=remove_todo,
-                            args=(item,story),
-                            key=f"delbutton_{item}_{story}",
-                        )
-
-        with st.container(horizontal=True, horizontal_alignment="center"):
-            story=df_list[df_list["store"]==store]["store"].unique()
-            st.button(
-                ":small[Effacer la liste]",
-                icon=":material/delete_forever:",
-                type="tertiary",
-                on_click=delete_all_checked,
-                args=(story),
-                key=f"delbutton_{story}"
-            )
-    else:
-        st.info("Pas d'article pour le moment :material/family_link:")
-
-
-
-
-#############################
-# Expander list Costco
-#############################
-
-with st.expander("Costco",expanded=False):
-    store = "Costco"
-    with st.container(horizontal_alignment="center"):
-        st.image(image_Costco, width=100)
-        st.title(
-            "Liste Costco",
-            width="content",
-            anchor=False,
-        )
-
-    with st.form(key="form_costco", border=False,enter_to_submit=False,clear_on_submit=True):
-        with st.container(
-            horizontal=True,
-            vertical_alignment="bottom",
-        ):
-            item=st.selectbox(
-                "Article: ", 
-                options = sorted(df_input["item"].unique()), 
-                accept_new_options = True, 
-                label_visibility="collapsed", 
-                placeholder="Nouvel article",
-            )
-
-            quantity=st.number_input(
-                "Quantity",
-                label_visibility="collapsed",
-                placeholder="Quantité",
-                min_value=1, step=1
-            )
-            submit=st.form_submit_button(
-                "Add",
-                icon=":material/add:",
-            )
-        if submit:
-            if item not in (df_list[df_list["store"]==store]["item"].unique()):
-                add_todo(store,item,quantity)
-                st.rerun()
-            else:
-                st.warning("Cet article est déjà dans la liste", icon="⚠️")
-
-    if store in stores:
-        with st.container(gap=None, border=True):
-            df_store = df_list[df_list["store"]==store]
-            for i,row in df_store.iterrows():
-                with st.container(horizontal=True, vertical_alignment="center"):
-                    col_check, col_text, col_spacer, col_delete = st.columns([1, 4, 4, 1],vertical_alignment="center")
-                    item=row["item"]
-                    check_og=row["crossed"]
-                    story=row["store"]
-                    quantity = row["quantity"]
-                    with col_check:
-                        st.checkbox(
-                            label="",
-                            value=check_og,
-                            width="content",
-                            key=f"checkbox_{item}_{story}",
-                            on_change=check_todo,
-                            args=(item,story,check_og)
-                        )
-                    with col_text:
-                        if check_og == False:
-                            st.write(f"   {quantity} x {item}")
-                        else:
-                            st.write(f"<s>   {quantity} x {item}<s>", unsafe_allow_html=True)
-                    with col_spacer:
-                        st.empty()
-                    with col_delete:
-                        st.button(
-                            ":material/delete:",
-                            type="tertiary",
-                            on_click=remove_todo,
-                            args=(item,story),
-                            key=f"delbutton_{item}_{story}",
-                        )
-
-        with st.container(horizontal=True, horizontal_alignment="center"):
-            story=df_list[df_list["store"]==store]["store"].unique()
-            st.button(
-                ":small[Effacer la liste]",
-                icon=":material/delete_forever:",
-                type="tertiary",
-                on_click=delete_all_checked,
-                args=(story),
-                key=f"delbutton_{story}"
-            )
-    else:
-        st.info("Pas d'article pour le moment :material/family_link:")
+    for i,row in df_input.iterrows():
+        with st.container(horizontal=True, vertical_alignment="center"):
+            col_text, col_delete = st.columns([9, 1],vertical_alignment="center")
+            item=row["item"]
+            with col_text:
+                st.write(f"{item}")
+            with col_delete:
+                st.button(
+                    ":material/delete:",
+                    type="tertiary",
+                    on_click=remove_freq,
+                    args=(item,),
+                    key=f"delfreqbutton_{item}",
+                )
