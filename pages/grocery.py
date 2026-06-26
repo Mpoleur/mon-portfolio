@@ -11,14 +11,15 @@ from st_clickable_images import clickable_images
 # force non responsive action
 st.markdown("""
 <style>
-    @media (max-width: 640px) {
-        [data-testid="stHorizontalBlock"] {
-            flex-wrap: nowrap !important;
-        }
-        [data-testid="column"] {
-            min-width: 0 !important;
-            padding: 0 2px !important;
-        }
+    [data-testid="stHorizontalBlock"] {
+        flex-wrap: nowrap !important;
+        width: 100% !important;
+        overflow: hidden !important;
+    }
+    [data-testid="column"] {
+        min-width: 0 !important;
+        flex: 1 1 0 !important;
+        overflow: hidden !important;
     }
 </style>
 """, unsafe_allow_html=True)
