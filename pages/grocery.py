@@ -162,7 +162,7 @@ def create_list(mag):
                 df_store = df_list[df_list["store"]==store]
                 for i,row in df_store.iterrows():
                     with st.container(horizontal=True, vertical_alignment="center"):
-                        col_check, col_text, col_spacer, col_delete = st.columns([1, 5,1, 1],vertical_alignment="center")
+                        col_check, col_text, col_delete = st.columns([1, 6, 1],vertical_alignment="center")
                         item=row["item"]
                         check_og=row["crossed"]
                         story=row["store"]
@@ -181,8 +181,7 @@ def create_list(mag):
                                 st.write(f"   {quantity} x {item}")
                             else:
                                 st.write(f"<s>   {quantity} x {item}<s>", unsafe_allow_html=True)
-                        with col_spacer:
-                            st.empty()
+
                         with col_delete:
                             st.button(
                                 ":material/delete:",
