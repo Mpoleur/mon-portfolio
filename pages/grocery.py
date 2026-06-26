@@ -172,7 +172,7 @@ def create_list(mag):
                             st.checkbox(
                                 label="",
                                 value=check_og,
-                                key=f"checkbox_{item}_{story}_{num}",
+                                key=f"checkbox_{item}_{story}",
                                 on_change=check_todo,
                                 args=(item, story)
                             )
@@ -189,7 +189,7 @@ def create_list(mag):
                                     type="tertiary",
                                     on_click=remove_todo,
                                     args=(item, story),
-                                    key=f"delbutton_{item}_{story}_{num}",
+                                    key=f"delbutton_{item}_{story}",
                                 )
 
             with st.container(horizontal=True, horizontal_alignment="center"):
