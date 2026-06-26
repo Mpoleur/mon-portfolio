@@ -8,23 +8,6 @@ from databricks import sql
 from databricks.sdk.core import Config, oauth_service_principal
 from st_clickable_images import clickable_images
 
-# force non responsive action
-st.markdown("""
-<style>
-    html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {
-        overflow-x: hidden !important;
-        max-width: 100vw !important;
-    }
-    [data-testid="stHorizontalBlock"] {
-        flex-wrap: nowrap !important;
-    }
-    [data-testid="column"] {
-        min-width: 0 !important;
-        flex: 1 1 0 !important;
-    }
-</style>
-""", unsafe_allow_html=True)
-
 #set up de la page streamlit
 st.set_page_config(
     # Title and icon for the browser's tab bar:
@@ -38,14 +21,6 @@ class Todo:
     text: str
     is_done = False
     uid: uuid.UUID = field(default_factory=uuid.uuid4)
-
-
-#if "todos" not in state:
-#    state.todos = [
-#        Todo(text="Buy milk"),
-#        Todo(text="Wash dishes"),
-#        Todo(text="Write a novel"),
-#    ]
 
 @st.cache_resource
 def get_connection():
@@ -123,7 +98,7 @@ def create_list(mag):
             st.image(img_url, width=100)
             st.title(
                 f"Liste {mag}",
-                width="content",
+#                width="content",
                 anchor=False,
             )
 
