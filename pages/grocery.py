@@ -8,7 +8,20 @@ from databricks import sql
 from databricks.sdk.core import Config, oauth_service_principal
 from st_clickable_images import clickable_images
 
-# routine pour chercher une table avec connection à la db
+# force non responsive action
+st.markdown("""
+<style>
+    @media (max-width: 640px) {
+        [data-testid="stHorizontalBlock"] {
+            flex-wrap: nowrap !important;
+        }
+        [data-testid="column"] {
+            min-width: 0 !important;
+            padding: 0 2px !important;
+        }
+    }
+</style>
+""", unsafe_allow_html=True)
 
 #set up de la page streamlit
 st.set_page_config(
@@ -147,7 +160,7 @@ def create_list(mag):
                 df_store = df_list[df_list["store"]==store]
                 for i,row in df_store.iterrows():
                     with st.container(horizontal=True, vertical_alignment="center"):
-                        col_check, col_text, col_spacer, col_delete = st.columns([1, 4, 4, 1],vertical_alignment="center")
+                        col_check, col_text, col_spacer, col_delete = st.columns([1, 7, 1, 1],vertical_alignment="center")
                         item=row["item"]
                         check_og=row["crossed"]
                         story=row["store"]
