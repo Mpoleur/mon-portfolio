@@ -11,20 +11,11 @@ from st_clickable_images import clickable_images
 # force non responsive action
 st.markdown("""
 <style>
-    html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {
-        overflow-x: hidden !important;
-        max-width: 100vw !important;
-    }
     [data-testid="stHorizontalBlock"] {
         flex-wrap: nowrap !important;
     }
-    [data-testid="column"] {
-        min-width: 0 !important;
-        flex: 1 1 0 !important;
-    }
 </style>
 """, unsafe_allow_html=True)
-
 #set up de la page streamlit
 st.set_page_config(
     # Title and icon for the browser's tab bar:
@@ -162,34 +153,30 @@ def create_list(mag):
                 df_store = df_list[df_list["store"]==store]
                 for i,row in df_store.iterrows():
                     with st.container(horizontal=True, vertical_alignment="center"):
-                        col_check, col_text, col_delete = st.columns([1, 6, 1],vertical_alignment="center")
-                        item=row["item"]
-                        check_og=row["crossed"]
-                        story=row["store"]
-                        quantity = row["quantity"]
+                        col_check, col_rest = st.columns([1, 11], vertical_alignment="center")
                         with col_check:
                             st.checkbox(
                                 label="",
                                 value=check_og,
-                                width="content",
-                                key=f"checkbox_{item}_{story}",
+                                key=f"checkbox_{item}_{story}_{num}",
                                 on_change=check_todo,
-                                args=(item,story,check_og)
+                                args=(item, story)
                             )
-                        with col_text:
-                            if check_og == False:
-                                st.write(f"   {quantity} x {item}")
-                            else:
-                                st.write(f"<s>   {quantity} x {item}<s>", unsafe_allow_html=True)
-
-                        with col_delete:
-                            st.button(
-                                ":material/delete:",
-                                type="tertiary",
-                                on_click=remove_todo,
-                                args=(item,story),
-                                key=f"delbutton_{item}_{story}",
-                            )
+                        with col_rest:
+                            sous_col_text, sous_col_delete = st.columns([10, 2], vertical_alignment="center")
+                            with sous_col_text:
+                                st.markdown(
+                                    f"<div style='overflow:hidden; text-overflow:ellipsis; white-space:nowrap;'>{quantity} x {item}</div>",
+                                    unsafe_allow_html=True
+                                )
+                            with sous_col_delete:
+                                st.button(
+                                    ":material/delete:",
+                                    type="tertiary",
+                                    on_click=remove_todo,
+                                    args=(item, story),
+                                    key=f"delbutton_{item}_{story}_{num}",
+                                )
 
             with st.container(horizontal=True, horizontal_alignment="center"):
                 story=df_list[df_list["store"]==store]["store"].unique()
