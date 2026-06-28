@@ -1,4 +1,5 @@
 import streamlit as st
+from st_clickable_images import clickable_images
 
 #set up de la page streamlit
 st.set_page_config(
@@ -37,10 +38,22 @@ with col3:
             st.switch_page("pages/comparator.py")
 
 st.column_config.Column(alignment="Left")
-col4, col5, col6 = st.columns(3)
-with col4:
-    st.image(image_url, width=200,link="pages/portfolio.py")
-with col5:
-    st.image(image_url, width=200)
-with col6:
-    st.image(image_url, width=200)
+tool1,tool2,tool3,tool4,tool5,tool6,tool7,tool8,tool9  = st.columns(9,gap=None)
+with tool1:
+    st.image(image_url, width="stretch",link="pages/portfolio.py")
+with tool2:
+    st.image(image_url, width="stretch")
+with tool3:
+    st.image(image_url, width="stretch")
+with tool4:
+    st.image(image_url, width="stretch")
+with tool5:
+    st.image(image_url, width="stretch")
+with tool6:
+    st.image(image_url, width="stretch")
+with tool7:
+    st.image(image_url, width="stretch")
+with tool8:
+    st.image(image_url, width="stretch")
+with tool9:
+    st.image(image_url, width="stretch")

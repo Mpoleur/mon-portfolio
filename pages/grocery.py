@@ -3,7 +3,6 @@ import streamlit as st
 from dataclasses import dataclass, field
 import uuid
 import pandas as pd
-import random 
 from databricks import sql
 from databricks.sdk.core import Config, oauth_service_principal
 from st_clickable_images import clickable_images
