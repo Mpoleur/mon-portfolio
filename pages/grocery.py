@@ -141,24 +141,23 @@ def create_list(mag):
                         check_og=row["crossed"]
                         story=row["store"]
                         quantity = row["quantity"]
-                        col_check, col_text, col_delete = st.columns([1, 9, 2], vertical_alignment="center")
-                        with col_check:
+                        with st.container(horizontal=True, vertical_alignment="center", gap="small"):
                             st.checkbox(
                                 label="",
                                 value=check_og,
+                                width="content",
                                 key=f"checkbox_{item}_{story}",
                                 on_change=check_todo,
                                 args=(item, story)
                             )
-                        with col_text:
                             st.markdown(
-                                f"<div style='overflow:hidden; text-overflow:ellipsis; white-space:nowrap;'>{quantity} x {item}</div>",
+                                f"<div style='flex: 1 1 auto; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;'>{quantity} x {item}</div>",
                                 unsafe_allow_html=True
                             )
-                        with col_delete:
                             st.button(
                                 ":material/delete:",
                                 type="tertiary",
+                                width="content",
                                 on_click=remove_todo,
                                 args=(item, story),
                                 key=f"delbutton_{item}_{story}",
