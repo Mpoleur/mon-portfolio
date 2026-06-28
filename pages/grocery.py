@@ -147,11 +147,12 @@ def create_list(mag):
                                 width="content",
                                 key=f"checkbox_{item}_{story}",
                                 on_change=check_todo,
-                                args=(item, story)
+                                args=(item, story, check_og)
                             )
-                            st.markdown(
-                                f"{quantity} x {item}",
-                            )
+                            if check_og == True:
+                                st.markdown(f"~~{quantity} x {item}~~",)
+                            else: 
+                                st.markdown(f"{quantity} x {item}",)
                             st.button(
                                 ":material/delete:",
                                 type="tertiary",
@@ -187,10 +188,10 @@ mags = ["PXmart","Costco", "Coupang","Ikea", "Autre"]
 
 
 # get data from sql
-selectlist = "select * from workspace.default.grocery_list"
+selectlist = "select * from workspace.default.grocery_list order by  crossed, item"
 df_list = sql_exe(selectlist, fetch = True)
 stores = df_list["store"].unique()
-df_input = sql_exe("select distinct item from workspace.default.grocery_freq_buy", fetch = True)
+df_input = sql_exe("select distinct item from workspace.default.grocery_freq_buy order by item", fetch = True)
 # st.dataframe(df_list)
 
 #############################
@@ -199,28 +200,23 @@ df_input = sql_exe("select distinct item from workspace.default.grocery_freq_buy
 for store in stores:
     create_list(store)
 
-with st.expander("Créer une nouvelle list", expanded = False):
-    with st.container(horizontal = False, border=True):
+with st.expander("Créer une nouvelle liste", expanded = False):
+    with st.container(horizontal = True, border=False):
         clicked_PXmart = -1
         clicked_Costco = -1
         clicked_coupang = -1
         clicked_ikea = -1
         clicked_other = -1
-        col1, col2, col3, col4, col5 = st.columns(5)
-        with col1:
-            if "PXmart" not in stores:
-                clicked_PXmart = clickable_images([image_PX],img_style={"margin": "5px", "width": "50px"})
-        with col2:
-            if "Costco" not in stores:
-                clicked_Costco = clickable_images([image_Costco],img_style={"margin": "5px", "width": "50px"})
-        with col3:
-            if "Coupang" not in stores:
-                clicked_coupang = clickable_images([image_coupang],img_style={"margin": "5px", "width": "50px"})
-        with col4:
-            if "Ikea" not in stores:
-                clicked_ikea = clickable_images([image_ikea],img_style={"margin": "5px", "width": "50px"})
-        with col5:
-            clicked_other = clickable_images([image_other],img_style={"margin": "5px", "width": "50px"})
+
+        if "PXmart" not in stores:
+            clicked_PXmart = clickable_images([image_PX],img_style={"margin": "5px", "width": "50px"})
+        if "Costco" not in stores:
+            clicked_Costco = clickable_images([image_Costco],img_style={"margin": "5px", "width": "50px"})
+        if "Coupang" not in stores:
+            clicked_coupang = clickable_images([image_coupang],img_style={"margin": "5px", "width": "50px"})
+        if "Ikea" not in stores:
+            clicked_ikea = clickable_images([image_ikea],img_style={"margin": "5px", "width": "50px"})
+        clicked_other = clickable_images([image_other],img_style={"margin": "5px", "width": "50px"})
 
         if clicked_PXmart == 0:
             create_list("PXmart")
@@ -261,10 +257,7 @@ with st.expander("Gestion des achats fréquants"):
 
     for i,row in df_input.iterrows():
         with st.container(horizontal=True, vertical_alignment="center"):
-#            col_text, col_delete = st.columns([9, 1],vertical_alignment="center")
             item=row["item"]
-#            with col_text:
-#            with col_delete:
             st.button(
                 ":material/delete:",
                 type="tertiary",

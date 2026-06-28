@@ -37,23 +37,13 @@ with col3:
         if st.button("Ouvrir comparateur"):
             st.switch_page("pages/comparator.py")
 
-st.column_config.Column(alignment="Left")
-tool1,tool2,tool3,tool4,tool5,tool6,tool7,tool8,tool9  = st.columns(9,gap=None)
-with tool1:
+with st.container(border=False, gap=None, horizontal=True):
     st.image(image_url, width="stretch",link="pages/portfolio.py")
-with tool2:
     st.image(image_url, width="stretch")
-with tool3:
     st.image(image_url, width="stretch")
-with tool4:
     st.image(image_url, width="stretch")
-with tool5:
     st.image(image_url, width="stretch")
-with tool6:
     st.image(image_url, width="stretch")
-with tool7:
     st.image(image_url, width="stretch")
-with tool8:
     st.image(image_url, width="stretch")
-with tool9:
     st.image(image_url, width="stretch")
