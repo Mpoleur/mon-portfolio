@@ -141,7 +141,7 @@ def create_list(mag):
                         check_og=row["crossed"]
                         story=row["store"]
                         quantity = row["quantity"]
-                        with st.container(horizontal=True, vertical_alignment="center", gap="small"):
+                        with st.container(horizontal=True, vertical_alignment="center", gap="small", horizontal_alignment="left"):
                             st.checkbox(
                                 label="",
                                 value=check_og,
@@ -151,8 +151,7 @@ def create_list(mag):
                                 args=(item, story)
                             )
                             st.markdown(
-                                f"<div style='flex: 1 1 auto; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;'>{quantity} x {item}</div>",
-                                unsafe_allow_html=True
+                                f"{quantity} x {item}",
                             )
                             st.button(
                                 ":material/delete:",
@@ -263,15 +262,15 @@ with st.expander("Gestion des achats fréquants"):
 
     for i,row in df_input.iterrows():
         with st.container(horizontal=True, vertical_alignment="center"):
-            col_text, col_delete = st.columns([9, 1],vertical_alignment="center")
+#            col_text, col_delete = st.columns([9, 1],vertical_alignment="center")
             item=row["item"]
-            with col_text:
-                st.write(f"{item}")
-            with col_delete:
-                st.button(
-                    ":material/delete:",
-                    type="tertiary",
-                    on_click=remove_freq,
-                    args=(item,),
-                    key=f"delfreqbutton_{item}",
-                )
+#            with col_text:
+#            with col_delete:
+            st.button(
+                ":material/delete:",
+                type="tertiary",
+                on_click=remove_freq,
+                args=(item,),
+                key=f"delfreqbutton_{item}",
+            )
+            st.write(f"{item}")
