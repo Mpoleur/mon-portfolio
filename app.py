@@ -36,33 +36,37 @@ with col3:
         st.write("Price comparator in Taiwan")
         if st.button("Ouvrir comparateur"):
             st.switch_page("pages/comparator.py")
+ 
 
+images = [
+    image_url,
+    image_url,
+    image_url,
+    image_url,
+    image_url,
+    image_url,
+    image_url,
+    image_url,
+    image_url
+]
 
-with st.container(horizontal=True, border=False, gap=None):
-    click1 = clickable_images([image_url],img_style={"margin": "Opx", "width": "10%"},key="o")
-    if click1 == 0:
-        st.switch_page("pages/comparator.py")
-    click2 = clickable_images([image_url],img_style={"margin": "Opx", "width": "10%"},key="i")
-    if click2 == 0:
-        st.switch_page("pages/comparator.py")
-    click3 = clickable_images([image_url],img_style={"margin": "Opx", "width": "10%"},key="u")
-    if click3 == 0:
-        st.switch_page("pages/comparator.py")
-    click4 = clickable_images([image_url],img_style={"margin": "Opx", "width": "10%"},key="y")
-    if click4 == 0:
-        st.switch_page("pages/comparator.py")
-    click5 = clickable_images([image_url],img_style={"margin": "Opx", "width": "10%"},key="t")
-    if click5 == 0:
-        st.switch_page("pages/comparator.py")
-    click6 = clickable_images([image_url],img_style={"margin": "Opx", "width": "10%"},key="r")
-    if click6 == 0:
-        st.switch_page("pages/comparator.py")
-    click7 = clickable_images([image_url],img_style={"margin": "Opx", "width": "10%"},key="e")
-    if click7 == 0:
-        st.switch_page("pages/comparator.py")
-    click8 = clickable_images([image_url],img_style={"margin": "Opx", "width": "10%"},key="z")
-    if click8 == 0:
-        st.switch_page("pages/comparator.py")
-    click9 = clickable_images([image_url],img_style={"margin": "Opx", "width": "10%"},key="a")
-    if click9 == 0:
-        st.switch_page("pages/comparator.py")
+pages = [
+    "pages/portfolio.py",
+    "pages/grocery.py",
+    "pages/comparator.py",
+    "pages/dices.py",
+    "pages/grocery.py",
+    "pages/comparator.py",
+    "pages/portfolio.py",
+    "pages/grocery.py",
+    "pages/comparator.py"
+]
+
+clicked = clickable_images(
+    images,
+    img_style={"margin": "0px", "width": "10%"},
+    key="toolbar_images"
+)
+
+if clicked is not None and clicked >= 0:
+    st.switch_page(pages[clicked])

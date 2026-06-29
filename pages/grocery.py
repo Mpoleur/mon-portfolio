@@ -40,11 +40,23 @@ def get_connection():
 
 def sql_exe(query, fetch=False):
     connection = get_connection()
-    with connection.cursor() as cursor:
-        cursor.execute(query)
-        if fetch:
-            return cursor.fetchall_arrow().to_pandas()
-
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute(query)
+            if fetch:
+                return cursor.fetchall_arrow().to_pandas()
+    except Exception as e:
+        if "Invalid SessionHandle" in str(e) or "closed" in str(e):
+            # Session expirée : vide le cache et reconnecte
+            st.cache_resource.clear()
+            connection = get_connection()
+            with connection.cursor() as cursor:
+                cursor.execute(query)
+                if fetch:
+                    return cursor.fetchall_arrow().to_pandas()
+        else:
+            raise
+        
 def remove_todo(item, store):
     query=f'Delete from workspace.default.grocery_list where store = "{store}" and item = "{item}"'
     sql_exe(query)
@@ -188,7 +200,7 @@ mags = ["PXmart","Costco", "Coupang","Ikea", "Autre"]
 
 
 # get data from sql
-selectlist = "select * from workspace.default.grocery_list order by  crossed, item"
+selectlist = "select * from workspace.default.grocery_list order by crossed, item"
 df_list = sql_exe(selectlist, fetch = True)
 stores = df_list["store"].unique()
 df_input = sql_exe("select distinct item from workspace.default.grocery_freq_buy order by item", fetch = True)
