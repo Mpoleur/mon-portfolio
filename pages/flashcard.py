@@ -84,14 +84,14 @@ st.markdown(
 
 st.title("🀄 Flashcards")
 default_books = ["1-1"]
-default_chap = ["1","2","3","4","5"]
+#default_chap = ["1","2","3","4","5"]
 books = df["Books"].unique()
 chapters =  df["Chapter"].unique()
 book = []
 chapter = []
 with st.expander("Choose your lessons",expanded=False):
     book = st.pills("Selected books", books, default=default_books, selection_mode="multi")
-    chapter = st.pills("Selected chapters", chapters, default=default_chap, selection_mode="multi")
+    chapter = st.pills("Selected chapters", chapters,  selection_mode="multi")
 
 mode = st.selectbox("Mode", MODES, index=MODES.index(st.session_state.mode))
 if mode != st.session_state.mode:
