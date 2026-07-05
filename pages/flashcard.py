@@ -152,5 +152,3 @@ elif st.session_state.mode == "Pinyin":
     st.link_button("Get Help",f"https://dictionary.writtenchinese.com/#sk={big_text}&svt=pinyin")
 else:
     st.link_button("Get Help",f"https://dictionary.writtenchinese.com/#sk={big_text}&svt=pinyin")
-
-#st.link_button("Get Help",f"https://dictionary.writtenchinese.com/#sk={}svt=pinyin")

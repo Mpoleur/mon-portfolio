@@ -78,7 +78,7 @@ st.dataframe(df_display.style.apply(highlight_min_row, axis=1)
 
 with st.expander("Ajouter un article"):
     with st.form("Add new price",enter_to_submit=False,clear_on_submit=True):
-        item_select = st.selectbox("Nom de l'article: ", options = sorted(df_input["item"].unique()), accept_new_options = True)
+        item = st.selectbox("Nom de l'article: ", options = sorted(df_input["item"].unique()), accept_new_options = True)
         store = st.selectbox("Magasin: ", options = sorted(df_input["store"].unique()), accept_new_options = True)
         price = round(st.number_input("Prix: ", min_value=0.01, step=0.01),2)
         quantity = round(st.number_input("Quantité: ", min_value=0.00, step=1.00),2)
