@@ -1,5 +1,13 @@
 import streamlit as st
+import base64
 from st_clickable_images import clickable_images
+
+
+def image_to_base64(image_path):
+    with open(image_path, "rb") as f:
+        data = f.read()
+    return "data:image/png;base64," + base64.b64encode(data).decode()
+
 
 #set up de la page streamlit
 st.set_page_config(
@@ -11,42 +19,20 @@ st.set_page_config(
 
 st.title("🛠️My toolbar")
 st.write("Choisis l'app que tu veux ouvrir :")
-image_url = "https://media.forgecdn.net/avatars/thumbnails/1031/807/256/256/638554680736765570.png"
-
-
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    with st.container(border=True):
-        st.subheader("📊 Portfolio Tracker")
-        st.write("Suivi de mes investissements")
-        if st.button("Ouvrir Portfolio"):
-            st.switch_page("pages/portfolio.py")
-
-with col2:
-    with st.container(border=True):
-        st.subheader("📋 Grocery list")
-        st.write("Liste de course")
-        if st.button("Ouvrir la liste de course"):
-            st.switch_page("pages/grocery.py")
-
-with col3:
-    with st.container(border=True):
-        st.subheader("🛒 Price comparator")
-        st.write("Price comparator in Taiwan")
-        if st.button("Ouvrir comparateur"):
-            st.switch_page("pages/comparator.py")
- 
+#url des images
+image_url = image_to_base64("img/Inventory.png")
+image_comp = image_to_base64("img/Comparator.png")
+image_dice = image_to_base64("img/Dice.png")
+image_flash = image_to_base64("img/Flashcard.png")
+image_grocery = image_to_base64("img/Grocery.png")
+image_portfolio = image_to_base64("img/portfolio.png")
 
 images = [
-    image_url,
-    image_url,
-    image_url,
-    image_url,
-    image_url,
-    image_url,
-    image_url,
-    image_url,
+    image_portfolio,
+    image_grocery,
+    image_comp,
+    image_dice,
+    image_flash,
     image_url
 ]
 
@@ -55,10 +41,7 @@ pages = [
     "pages/grocery.py",
     "pages/comparator.py",
     "pages/dices.py",
-    "pages/grocery.py",
-    "pages/comparator.py",
-    "pages/portfolio.py",
-    "pages/grocery.py",
+    "pages/flashcard.py",
     "pages/comparator.py"
 ]
 

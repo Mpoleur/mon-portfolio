@@ -193,8 +193,9 @@ image_PX = "https://shoplineimg.com/5cc3db30527c4b0001a30cf0/5f8bc65696b102003bd
 image_Costco = "https://upload.wikimedia.org/wikipedia/commons/5/59/Costco_Wholesale_logo_2010-10-26.svg"
 image_coupang = "https://www.aboutcoupang.com/wp-content/themes/aboutcp/assets/images/logo.svg"
 image_ikea =  "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Ikea_logo.svg/960px-Ikea_logo.svg.png"
+image_carrefour = "https://upload.wikimedia.org/wikipedia/fr/thumb/3/3b/Logo_Carrefour.svg/langfr-1920px-Logo_Carrefour.svg.png"
 image_other = "https://us.123rf.com/450wm/grigoriyzhukov/grigoriyzhukov2503/grigoriyzhukov250300207/243689390-red-shopping-basket-filled-with-groceries-and-fresh-food-items-vector-illustration.jpg"
-mags = ["PXmart","Costco", "Coupang","Ikea", "Autre"]
+mags = ["PXmart","Costco", "Coupang","Ikea","Carrefour", "Autre"]
 #############################
 
 
@@ -218,6 +219,7 @@ with st.expander("Créer une nouvelle liste", expanded = False):
         clicked_Costco = -1
         clicked_coupang = -1
         clicked_ikea = -1
+        clicked_carrefour = -1
         clicked_other = -1
 
         if "PXmart" not in stores:
@@ -228,6 +230,8 @@ with st.expander("Créer une nouvelle liste", expanded = False):
             clicked_coupang = clickable_images([image_coupang],img_style={"margin": "5px", "width": "50px"})
         if "Ikea" not in stores:
             clicked_ikea = clickable_images([image_ikea],img_style={"margin": "5px", "width": "50px"})
+        if "Carrefour" not in stores:
+            clicked_carrefour = clickable_images([image_carrefour],img_style={"margin": "5px", "width": "50px"})
         clicked_other = clickable_images([image_other],img_style={"margin": "5px", "width": "50px"})
 
         if clicked_PXmart == 0:
@@ -238,6 +242,8 @@ with st.expander("Créer une nouvelle liste", expanded = False):
             create_list("Coupang")
         if clicked_ikea == 0:
             create_list("Ikea")
+        if clicked_carrefour == 0:
+            create_list("Carrefour")
         if clicked_other == 0:
             create_list("other")
 
