@@ -21,7 +21,7 @@ st.set_page_config(
 # Get data frame from csv
 #############################
 
-CSV_PATH = "Voc.csv"
+CSV_PATH = "voc.csv"
 
 MODES = ["English", "Pinyin", "Hanzi"]
 COL_FOR_MODE = {"English": "Anglais", "Pinyin": "Pinyin", "Hanzi": "Chinois"}
