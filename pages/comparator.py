@@ -31,7 +31,7 @@ def get_dataframe(selection):
 
 #function highlight row
 def highlight_min_row(row):
-    is_min = row["unit_price"] == df_display["unit_price"].min()
+    is_min = row["unit price"] == df_display["unit price"].min()
     return ['background-color: green' if is_min else '' for _ in row]
 
 #set up de la page streamlit
