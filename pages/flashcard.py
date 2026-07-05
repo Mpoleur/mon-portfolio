@@ -145,5 +145,5 @@ st.divider()
 if st.button("🔀 Shuffle"):
     new_shuffle(len(df))
     st.rerun()
-st.link_button("Get Help",f"https://dictionary.writtenchinese.com/#sk={front_text}svt=pinyin")
+st.link_button("Get Help",f"https://dictionary.writtenchinese.com/#sk={front_text}&svt=pinyin")
 #st.link_button("Get Help",f"https://dictionary.writtenchinese.com/#sk={}svt=pinyin")
