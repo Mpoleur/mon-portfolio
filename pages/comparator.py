@@ -66,7 +66,8 @@ dropdown = st.selectbox(
     (df_compute["item"].unique()),
 )
 
-df_display = df_compute[["item","store","price","unit price","measure"]][df_compute["item"]==dropdown].assign(price=lambda x: x["price"].round(2))
+df_display = df_compute[["item","store","price","unit price","measure"]][df_compute["item"]==dropdown].copy()
+df_display["price"] = df_display["price"].round(2)
 
 #display intput selected by dropdown
 st.dataframe(df_display.style.apply(highlight_min_row, axis=1)
