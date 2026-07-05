@@ -58,7 +58,6 @@ df_compute.loc[df_compute["metric"] == "u", "measure"] = "/ unit"
 df_compute.loc[df_compute["metric"] == "g", "measure"] = "/ 100g"
 df_compute.loc[df_compute["metric"] == "Kg", "measure"] = "/ 100g"
 df_compute.loc[df_compute["metric"] == "l", "measure"] = "/ liter"
-df_compute["price"] = round(df_compute["price"],2)
 
 
 # select one item
@@ -67,7 +66,7 @@ dropdown = st.selectbox(
     (df_compute["item"].unique()),
 )
 
-df_display = df_compute[["item","store","price","unit price","measure"]][df_compute["item"]==dropdown]
+df_display = df_compute[["item","store","price","unit price","measure"]][df_compute["item"]==dropdown].assign(price=lambda x: x["price"].round(2))
 
 #display intput selected by dropdown
 st.dataframe(df_display.style.apply(highlight_min_row, axis=1)
