@@ -21,14 +21,6 @@ st.set_page_config(
 # Get data frame from csv
 #############################
 
-st.set_page_config(page_title="Flashcards Chinois", page_icon="🀄", layout="centered")
-
-import random
-import pandas as pd
-import streamlit as st
-
-st.set_page_config(page_title="Flashcards Chinois", page_icon="🀄", layout="centered")
-
 CSV_PATH = "Voc.csv"
 
 MODES = ["English", "Pinyin", "Hanzi"]
@@ -90,14 +82,14 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-st.title("🀄 Flashcards Vocabulaire Chinois")
+st.title("🀄 Flashcards")
 
-mode = st.selectbox("Mode d'affichage", MODES, index=MODES.index(st.session_state.mode))
+mode = st.selectbox("Mode", MODES, index=MODES.index(st.session_state.mode))
 if mode != st.session_state.mode:
     st.session_state.mode = mode
     st.session_state.revealed = False
 
-st.caption(f"Carte {st.session_state.pos + 1} / {len(df)}")
+st.caption(f"Word {st.session_state.pos + 1} / {len(df)}")
 
 current_idx = st.session_state.order[st.session_state.pos]
 word = df.iloc[current_idx]
@@ -116,7 +108,7 @@ small_text = str(word[small_col])
 
 if not st.session_state.revealed:
     card_html = f'<div class="card"><div class="front-text">{front_text}</div></div>'
-    button_label = "👉 Afficher la réponse"
+    button_label = "👉 Show answer"
 else:
     card_html = (
         f'<div class="card">'
@@ -124,7 +116,7 @@ else:
         f'<div class="small-text">{small_text}</div>'
         f"</div>"
     )
-    button_label = "➡️ Mot suivant"
+    button_label = "➡️ Next word"
 
 st.markdown(card_html, unsafe_allow_html=True)
 
@@ -140,6 +132,6 @@ if st.button(button_label, use_container_width=True):
     st.rerun()
 
 st.divider()
-if st.button("🔀 Recommencer avec un nouvel ordre"):
+if st.button("🔀 Shuffle"):
     new_shuffle()
     st.rerun()
