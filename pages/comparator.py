@@ -58,6 +58,7 @@ df_compute.loc[df_compute["metric"] == "u", "measure"] = "/ unit"
 df_compute.loc[df_compute["metric"] == "g", "measure"] = "/ 100g"
 df_compute.loc[df_compute["metric"] == "Kg", "measure"] = "/ 100g"
 df_compute.loc[df_compute["metric"] == "l", "measure"] = "/ liter"
+df_compute["price"] = round(df_compute["price"],2)
 
 
 # select one item
