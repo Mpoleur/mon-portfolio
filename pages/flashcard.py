@@ -89,7 +89,7 @@ if mode != st.session_state.mode:
 df = df_all[df_all["Chapter"].isin(chapter) & df_all["Books"].isin(book)].reset_index(drop=True)
 
 if df.empty:
-    st.warning("Aucun mot ne correspond à cette sélection. Choisis au moins un livre et un chapitre.")
+    st.warning("No selection!")
     st.stop()
 
 # --- Si la sélection a changé (ou 1er chargement), on régénère order/pos à la bonne taille ---
@@ -114,6 +114,7 @@ else:
 front_text = str(word[front_col])
 big_text = str(word[big_col])
 small_text = str(word[small_col])
+
 
 if not st.session_state.revealed:
     card_html = f'<div class="card"><div class="front-text">{front_text}</div></div>'
@@ -144,3 +145,5 @@ st.divider()
 if st.button("🔀 Shuffle"):
     new_shuffle(len(df))
     st.rerun()
+st.link_button("Get Help","https://dictionary.writtenchinese.com/")
+#st.link_button("Get Help","https://dictionary.writtenchinese.com/#sk=wo&svt=pinyin")
