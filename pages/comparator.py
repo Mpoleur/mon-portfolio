@@ -50,10 +50,10 @@ df_input = get_dataframe(select1)
 
 # display and compute dataframe based on input
 df_compute = df_input.copy()
-df_compute.loc[df_compute["metric"] == "u", "unit_price"] = round(df_compute["price"]/df_compute["quantity"],2)
-df_compute.loc[df_compute["metric"] == "g", "unit_price"] = round(df_compute["price"]/df_compute["quantity"]*100,2)
-df_compute.loc[df_compute["metric"] == "Kg", "unit_price"] = round(df_compute["price"]/df_compute["quantity"]/10,2)
-df_compute.loc[df_compute["metric"] == "l", "unit_price"] = round(df_compute["price"]/df_compute["quantity"]/10,2)
+df_compute.loc[df_compute["metric"] == "u", "unit price"] = round(df_compute["price"]/df_compute["quantity"],2)
+df_compute.loc[df_compute["metric"] == "g", "unit price"] = round(df_compute["price"]/df_compute["quantity"]*100,2)
+df_compute.loc[df_compute["metric"] == "Kg", "unit price"] = round(df_compute["price"]/df_compute["quantity"]/10,2)
+df_compute.loc[df_compute["metric"] == "l", "unit price"] = round(df_compute["price"]/df_compute["quantity"]/10,2)
 df_compute.loc[df_compute["metric"] == "u", "measure"] = "/ unit"
 df_compute.loc[df_compute["metric"] == "g", "measure"] = "/ 100g"
 df_compute.loc[df_compute["metric"] == "Kg", "measure"] = "/ 100g"
@@ -66,11 +66,11 @@ dropdown = st.selectbox(
     (df_compute["item"].unique()),
 )
 
-df_display = df_compute[["item","store","unit_price","measure"]][df_compute["item"]==dropdown]
+df_display = df_compute[["item","store","price","unit price","measure"]][df_compute["item"]==dropdown]
 
 #display intput selected by dropdown
 st.dataframe(df_display.style.apply(highlight_min_row, axis=1)
-            .format({"unit_price": "{:.2f}"})
+            .format({"unit price": "{:.2f}"})
             )
 
 
