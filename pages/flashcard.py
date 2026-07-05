@@ -3,16 +3,10 @@ import pandas as pd
 import random
 
 #############################
-# Functions
-#############################
-
-
-#############################
 # Page set up
 #############################
 
 st.set_page_config(
-    # Title and icon for the browser's tab bar:
     page_title="Flashcard",
     page_icon="🀄",
 )
@@ -32,21 +26,14 @@ def load_vocab():
     return pd.read_csv(CSV_PATH)
 
 
-df = load_vocab()
-
-if "order" not in st.session_state:
-    order = list(range(len(df)))
-    random.shuffle(order)
-    st.session_state.order = order
-    st.session_state.pos = 0
-    st.session_state.revealed = False
+df_all = load_vocab()
 
 if "mode" not in st.session_state:
     st.session_state.mode = "English"
 
 
-def new_shuffle():
-    order = list(range(len(df)))
+def new_shuffle(n):
+    order = list(range(n))
     random.shuffle(order)
     st.session_state.order = order
     st.session_state.pos = 0
@@ -83,13 +70,13 @@ st.markdown(
 )
 
 st.title("🀄 Flashcards")
+
 default_books = ["1-1"]
-default_chap = [1,2,3,4,5]
-books = sorted(df["Books"].unique())
-chapters =  sorted(df["Chapter"].unique())
-book = []
-chapter = []
-with st.expander("Choose your lessons",expanded=False):
+default_chap = [1, 2, 3, 4, 5]
+books = sorted(df_all["Books"].unique())
+chapters = sorted(df_all["Chapter"].unique())
+
+with st.expander("Choose your lessons", expanded=False):
     book = st.pills("Selected books", books, default=default_books, selection_mode="multi")
     chapter = st.pills("Selected chapters", chapters, default=default_chap, selection_mode="multi")
 
@@ -97,6 +84,19 @@ mode = st.selectbox("Mode", MODES, index=MODES.index(st.session_state.mode))
 if mode != st.session_state.mode:
     st.session_state.mode = mode
     st.session_state.revealed = False
+
+# --- Dataframe filtré selon la sélection ---
+df = df_all[df_all["Chapter"].isin(chapter) & df_all["Books"].isin(book)].reset_index(drop=True)
+
+if df.empty:
+    st.warning("Aucun mot ne correspond à cette sélection. Choisis au moins un livre et un chapitre.")
+    st.stop()
+
+# --- Si la sélection a changé (ou 1er chargement), on régénère order/pos à la bonne taille ---
+selection_key = (tuple(sorted(book)), tuple(sorted(chapter)))
+if st.session_state.get("selection_key") != selection_key:
+    st.session_state.selection_key = selection_key
+    new_shuffle(len(df))
 
 st.caption(f"Word {st.session_state.pos + 1} / {len(df)}")
 
@@ -134,7 +134,7 @@ if st.button(button_label, use_container_width=True):
         st.session_state.revealed = True
     else:
         if st.session_state.pos + 1 >= len(df):
-            new_shuffle()
+            new_shuffle(len(df))
         else:
             st.session_state.pos += 1
             st.session_state.revealed = False
@@ -142,5 +142,5 @@ if st.button(button_label, use_container_width=True):
 
 st.divider()
 if st.button("🔀 Shuffle"):
-    new_shuffle()
+    new_shuffle(len(df))
     st.rerun()
