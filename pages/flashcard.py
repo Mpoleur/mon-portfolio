@@ -3,12 +3,28 @@ import pandas as pd
 import random
 
 #############################
+# Remove side bar
+#############################
+
+st.markdown("""
+<style>
+    [data-testid="stSidebar"] {
+        display: none !important;
+    }
+    [data-testid="stSidebarCollapsedControl"] {
+        display: none !important;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+#############################
 # Page set up
 #############################
 
 st.set_page_config(
     page_title="Flashcard",
     page_icon="🀄",
+    initial_sidebar_state=None,
 )
 
 #############################

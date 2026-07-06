@@ -5,7 +5,10 @@ import yfinance as yf
 from databricks import sql
 from databricks.sdk.core import Config, oauth_service_principal
 
-# routine pour chercher une table avec connection à la db
+#############################
+# Get data frame from csv
+#############################
+
 @st.cache_data
 def get_dataframe(selection):
     host = os.environ.get("DATABRICKS_HOST")
@@ -29,26 +32,39 @@ def get_dataframe(selection):
             df = cursor.fetchall_arrow().to_pandas()
     return df
 
-#set up de la page streamlit
+#############################
+# Page config
+#############################
+
 st.set_page_config(
-    # Title and icon for the browser's tab bar:
     page_title="Portfolio",
     page_icon="📊",
-    # Make the content take up the width of the page:
     layout="wide",
 )
+#############################
+# Title section
+#############################
+
 st.title("📊 Mon Portefeuille en Direct")
 
-# call portfolio view
+#############################
+# Portfolio Dataframe with pills filtering
+#############################
+
 select1 = "select * from workspace.default.portfolio_view"
 df_portfolio = get_dataframe(select1)
-st.write("Voici ton portefeuille en direct de Databricks :")
-status = df_portfolio["status"].unique()
-selected_status = st.pills(
-    "Sélection de status: ", status, default="Open", selection_mode="multi"
-)
-df_filtered_port=df_portfolio[df_portfolio["status"].isin(selected_status)]
-st.dataframe(df_filtered_port)
+
+with st.expander("Portofolio summary",expanded=False):
+    st.write("Voici ton portefeuille en direct de Databricks :")
+    status = df_portfolio["status"].unique()
+    # Pills filtering
+    selected_status = st.pills(
+        "Sélection de status: ", status, default="Open", selection_mode="multi"
+    )
+
+    df_filtered_port=df_portfolio[df_portfolio["status"].isin(selected_status)]
+    # Display dataframe
+    st.dataframe(df_filtered_port)
 
 # call input
 select2 = "select * from workspace.default.portfolio"
@@ -157,3 +173,78 @@ with row5[2]:
         st.write("Break price in ",ycurrency, round(dbreakpoint/eNOK,2))
     else:
         pass
+
+#############################
+# Add Data section
+#############################
+
+with st.expander("New transaction", expanded=False):
+    
+    # Widgets conditionnels EN DEHORS du form
+    in_orig_currency = st.segmented_control("Devise", options=["EUR","USD","NOK","CAD"], selection_mode="single", default="EUR")
+    
+    in_change = None
+    in_price_currency = None
+    in_price_eur = 0.0
+
+    if in_orig_currency != "EUR":
+        in_change = st.number_input("Taux de change", min_value=0.000001)
+
+    # Le form sans widget conditionnel
+    with st.form("new_transaction", enter_to_submit=False, clear_on_submit=True):
+        in_ticker = st.selectbox("Ticker", options=(df_portfolio[df_portfolio["status"]=="Open"]["ticker"].unique()), accept_new_options=True)
+        in_date = st.date_input("Date", format="YYYY/MM/DD")
+        in_year = in_date.year
+        in_transtype = st.segmented_control("Type", options=["Buy","Sell","Dividend","Option"], selection_mode="single", default="Buy")
+        in_number = st.number_input("Shares", min_value=1, step=1)
+        in_price = st.number_input("Prix unitaire", min_value=0.01)
+        in_total = st.number_input("Total", min_value=0.01)
+
+        submitted = st.form_submit_button("Add", icon=":material/add:")
+
+    # Logique après submit, en dehors du form
+    if submitted:
+        if in_orig_currency == "EUR":
+            in_price_eur = in_price
+        else:
+            in_price_currency = in_price
+            if in_change and in_change > 0:
+                in_price_eur = in_price / in_change
+
+        in_total_cost = (in_price_eur * in_number) - in_total
+        in_id = "D"
+
+        in_query = f"""
+            INSERT INTO workspace.default.portfolio_view 
+            (Transaction_ID,
+            Transaction_Date,
+            Transaction_Year,
+            Title,
+            Transaction_type,
+            Shares,
+            Price_EUR,
+            Change,
+            Price_Currency,
+            Original_Currency,
+            Transaction_cost,
+            Total_Transaction)
+            VALUES (
+                {in_id},
+                {in_date},
+                {in_year},
+                {in_ticker},
+                {in_transtype},
+                {in_number},
+                {in_price_eur},
+                {in_change if in_change is not None else 'NULL'},
+                {f"'{in_price_currency}'" if in_price_currency is not None else 'NULL'},
+                {in_orig_currency},
+                {in_total_cost},
+                {in_total}
+            )
+        """
+        submitted = st.form_submit_button("Add",icon=":material/add:")
+
+    if submitted:
+        st.write(in_query)
+
