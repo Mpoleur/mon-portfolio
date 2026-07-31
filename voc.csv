@@ -192,112 +192,6 @@
 爸爸,bàba,dad,1-1,2
 媽媽,māma,mom,1-1,2
 請進,qǐng jìn,Please come in!,1-1,2
-我,wǒ,I / me,101,x
-你,nǐ,you,101,x
-他,tā,he / him,101,x
-她,tā,she / her,101,x
-它,tā,it,101,x
-我們,wǒmen,we / us,101,x
-你們,nǐmen,you (plural),101,x
-傳統,tāmen,they / them (male/mixed),101,x
-它們,tāmen,they / them (non-human),101,x
-這,zhè,this,101,x
-那,nà,that,101,x
-這裡,zhèlǐ,here,101,x
-那裡,nàlǐ,there,101,x
-中國,Zhōngguó,China,101,x
-中文,Zhōngwén,Chinese language,101,x
-人,rén,person / people,101,x
-名字,míngzi,name,101,x
-媽媽,māma,mom / mother,101,x
-爸爸,bàba,dad / father,101,x
-朋友,péngyou,friend,101,x
-孩子,háizi,child / kids,101,x
-地方,dìfang,place / location,101,x
-家,jiā,home / family,101,x
-店,diàn,shop / store,101,x
-東西,dōngxi,thing / stuff,101,x
-錢,qián,money,101,x
-工作,gōngzuò,work / job,101,x
-房子,fángzi,house / building,101,x
-房間,fángjiān,room,101,x
-車,chē,car / vehicle,101,x
-路,lù,road / path,101,x
-水,shuǐ,water,101,x
-茶,chá,tea,101,x
-飯,fàn,rice / meal,101,x
-電,diàn,electricity,101,x
-手機,shǒujī,cellphone / mobile phone,101,x
-書,shū,book,101,x
-現在,xiànzài,now,101,x
-今天,jīntiān,today,101,x
-明天,míngtiān,tomorrow,101,x
-昨天,zuótiān,yesterday,101,x
-時間,shíjiān,time,101,x
-時候,shíhou,time / moment,101,x
-分鐘,fēnzhōng,minute,101,x
-年,nián,year,101,x
-月,yuè,month / moon,101,x
-日,rì,day / sun,101,x
-號,hào,day of month / number,101,x
-星期,xīngqī,week,101,x
-裡面,lǐmiàn,inside,101,x
-外面,wàimiàn,outside,101,x
-個,gè,general measure word,101,x
-元,yuán,Yuan (currency unit),101,x
-塊,kuài,piece / Yuan (spoken),101,x
-做,zuò,to do / to make,101,x
-是,shì,to be,101,x
-在,zài,to be at / located in,101,x
-有,yǒu,to have,101,x
-來,lái,to come,101,x
-去,qù,to go,101,x
-回,huí,to return,101,x
-想,xiǎng,to think / to want,101,x
-要,yào,to want / need,101,x
-吃,chī,to eat,101,x
-喝,hē,to drink,101,x
-說,shuō,to speak / to say,101,x
-看,kàn,to look / to watch,101,x
-聽,tīng,to listen,101,x
-見,jiàn,to see / to meet,101,x
-叫,jiào,to be called / to call,101,x
-給,gěi,to give,101,x
-打,dǎ,to hit / to play (sports),101,x
-買,mǎi,to buy,101,x
-到,dào,to arrive,101,x
-等,děng,to wait,101,x
-學,xué,to learn / to study,101,x
-喜歡,xǐhuan,to like,101,x
-好,hǎo,good,101,x
-壞,huài,bad,101,x
-大,dà,big,101,x
-小,xiǎo,small,101,x
-多,duō,many / much,101,x
-少,shǎo,few / little,101,x
-遠,yuǎn,far,101,x
-近,jìn,near / close,101,x
-熱,rè,hot,101,x
-冷,lěng,cold,101,x
-男,nán,male,101,x
-女,nǚ,female,101,x
-漂亮,piàoliang,pretty / beautiful,101,x
-高興,gāoxìng,happy / glad,101,x
-有趣,yǒuqù,interesting,101,x
-很,hěn,very,101,x
-太,tài,too (much),101,x
-也,yě,also / too,101,x
-就,jiù,then / at once,101,x
-不,bù,not,101,x
-沒,méi,not (have),101,x
-和,hé,and,101,x
-但是,dànshì,but / however,101,x
-因為,yīnwèi,because,101,x
-所以,suǒyǐ,so / therefore,101,x
-如果,rúguǒ,if,101,x
-比如,bǐrú,for example,101,x
-還是,háishì,or (in questions),101,x
-那個,nèige,that one / um (filler),101,x
 他們,tāmen,they / them,1-2,6
 學校,xuéxiào,school,1-2,6
 在,zài,at / in / to be located,1-2,6
@@ -518,4 +412,110 @@ KTV,KTV,karaoke (from “Karaoke Television”),1-2,7
 到,dào,to arrive / to,1-2,10
 從,cóng,from,1-2,10
 往,wǎng,towards,1-2,10
-離,lí,distance from,1-2,x
+離,lí,distance from,1-2,10
+我,wǒ,I / me,101,x
+你,nǐ,you,101,x
+他,tā,he / him,101,x
+她,tā,she / her,101,x
+它,tā,it,101,x
+我們,wǒmen,we / us,101,x
+你們,nǐmen,you (plural),101,x
+傳統,tāmen,they / them (male/mixed),101,x
+它們,tāmen,they / them (non-human),101,x
+這,zhè,this,101,x
+那,nà,that,101,x
+這裡,zhèlǐ,here,101,x
+那裡,nàlǐ,there,101,x
+中國,Zhōngguó,China,101,x
+中文,Zhōngwén,Chinese language,101,x
+人,rén,person / people,101,x
+名字,míngzi,name,101,x
+媽媽,māma,mom / mother,101,x
+爸爸,bàba,dad / father,101,x
+朋友,péngyou,friend,101,x
+孩子,háizi,child / kids,101,x
+地方,dìfang,place / location,101,x
+家,jiā,home / family,101,x
+店,diàn,shop / store,101,x
+東西,dōngxi,thing / stuff,101,x
+錢,qián,money,101,x
+工作,gōngzuò,work / job,101,x
+房子,fángzi,house / building,101,x
+房間,fángjiān,room,101,x
+車,chē,car / vehicle,101,x
+路,lù,road / path,101,x
+水,shuǐ,water,101,x
+茶,chá,tea,101,x
+飯,fàn,rice / meal,101,x
+電,diàn,electricity,101,x
+手機,shǒujī,cellphone / mobile phone,101,x
+書,shū,book,101,x
+現在,xiànzài,now,101,x
+今天,jīntiān,today,101,x
+明天,míngtiān,tomorrow,101,x
+昨天,zuótiān,yesterday,101,x
+時間,shíjiān,time,101,x
+時候,shíhou,time / moment,101,x
+分鐘,fēnzhōng,minute,101,x
+年,nián,year,101,x
+月,yuè,month / moon,101,x
+日,rì,day / sun,101,x
+號,hào,day of month / number,101,x
+星期,xīngqī,week,101,x
+裡面,lǐmiàn,inside,101,x
+外面,wàimiàn,outside,101,x
+個,gè,general measure word,101,x
+元,yuán,Yuan (currency unit),101,x
+塊,kuài,piece / Yuan (spoken),101,x
+做,zuò,to do / to make,101,x
+是,shì,to be,101,x
+在,zài,to be at / located in,101,x
+有,yǒu,to have,101,x
+來,lái,to come,101,x
+去,qù,to go,101,x
+回,huí,to return,101,x
+想,xiǎng,to think / to want,101,x
+要,yào,to want / need,101,x
+吃,chī,to eat,101,x
+喝,hē,to drink,101,x
+說,shuō,to speak / to say,101,x
+看,kàn,to look / to watch,101,x
+聽,tīng,to listen,101,x
+見,jiàn,to see / to meet,101,x
+叫,jiào,to be called / to call,101,x
+給,gěi,to give,101,x
+打,dǎ,to hit / to play (sports),101,x
+買,mǎi,to buy,101,x
+到,dào,to arrive,101,x
+等,děng,to wait,101,x
+學,xué,to learn / to study,101,x
+喜歡,xǐhuan,to like,101,x
+好,hǎo,good,101,x
+壞,huài,bad,101,x
+大,dà,big,101,x
+小,xiǎo,small,101,x
+多,duō,many / much,101,x
+少,shǎo,few / little,101,x
+遠,yuǎn,far,101,x
+近,jìn,near / close,101,x
+熱,rè,hot,101,x
+冷,lěng,cold,101,x
+男,nán,male,101,x
+女,nǚ,female,101,x
+漂亮,piàoliang,pretty / beautiful,101,x
+高興,gāoxìng,happy / glad,101,x
+有趣,yǒuqù,interesting,101,x
+很,hěn,very,101,x
+太,tài,too (much),101,x
+也,yě,also / too,101,x
+就,jiù,then / at once,101,x
+不,bù,not,101,x
+沒,méi,not (have),101,x
+和,hé,and,101,x
+但是,dànshì,but / however,101,x
+因為,yīnwèi,because,101,x
+所以,suǒyǐ,so / therefore,101,x
+如果,rúguǒ,if,101,x
+比如,bǐrú,for example,101,x
+還是,háishì,or (in questions),101,x
+那個,nèige,that one / um (filler),101,x
