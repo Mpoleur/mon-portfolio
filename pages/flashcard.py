@@ -90,7 +90,10 @@ st.title("🀄 Flashcards")
 #default_books = ["1-1"]
 default_chap = ['5']
 books = sorted(df_all["Books"].unique())
-chapters = sorted(df_all["Chapter"].unique())
+chapters = sorted(
+    df_all["Chapter"].unique(),
+    key=lambda x: (0, int(x)) if str(x).isdigit() else (1, str(x))
+)
 
 with st.expander("Choose your lessons", expanded=False):
 #    book = st.pills("Selected books", books, default=default_books, selection_mode="multi")
