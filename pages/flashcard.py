@@ -100,7 +100,7 @@ with st.expander("Choose your lessons", expanded=False):
     chapter = st.pills("Selected chapters", chapters, default=default_chap, selection_mode="multi")
     if len(chapter) ==1:
         chap = "".join(chapter)
-        st.link_button("Open lesson",f"https://zhongchinese.com/articles/vocabulary/course-in-contemporary-chinese-vocabulary-book-{chap}/")
+        st.link_button("Open lesson",f"https://zhongchinese.com/articles/vocabulary/book-1-lesson-{chap}-vocabulary/")
     else:
         pass
 
