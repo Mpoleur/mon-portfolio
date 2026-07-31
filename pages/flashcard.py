@@ -87,13 +87,13 @@ st.markdown(
 
 st.title("🀄 Flashcards")
 
-default_books = ["1-1"]
+#default_books = ["1-1"]
 default_chap = ['5']
 books = sorted(df_all["Books"].unique())
 chapters = sorted(df_all["Chapter"].unique())
 
 with st.expander("Choose your lessons", expanded=False):
-    book = st.pills("Selected books", books, default=default_books, selection_mode="multi")
+#    book = st.pills("Selected books", books, default=default_books, selection_mode="multi")
     chapter = st.pills("Selected chapters", chapters, default=default_chap, selection_mode="multi")
 
 mode = st.selectbox("Mode", MODES, index=MODES.index(st.session_state.mode))
@@ -102,14 +102,14 @@ if mode != st.session_state.mode:
     st.session_state.revealed = False
 
 # --- Dataframe filtré selon la sélection ---
-df = df_all[df_all["Chapter"].isin(chapter) & df_all["Books"].isin(book)].reset_index(drop=True)
+df = df_all[df_all["Chapter"].isin(chapter)].reset_index(drop=True)
 
 if df.empty:
     st.warning("No selection!")
     st.stop()
 
 # --- Si la sélection a changé (ou 1er chargement), on régénère order/pos à la bonne taille ---
-selection_key = (tuple(sorted(book)), tuple(sorted(chapter)))
+selection_key = tuple(sorted(chapter))
 if st.session_state.get("selection_key") != selection_key:
     st.session_state.selection_key = selection_key
     new_shuffle(len(df))
