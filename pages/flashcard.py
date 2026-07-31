@@ -85,7 +85,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-st.title("🀄 Flashcards")
+st.title("🀄 Flashcards B")
 
 #default_books = ["1-1"]
 default_chap = ['5']
