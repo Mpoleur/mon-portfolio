@@ -98,6 +98,7 @@ chapters = sorted(
 with st.expander("Choose your lessons", expanded=False):
 #    book = st.pills("Selected books", books, default=default_books, selection_mode="multi")
     chapter = st.pills("Selected chapters", chapters, default=default_chap, selection_mode="multi")
+    st.link_button("Open lesson",f"https://zhongchinese.com/articles/vocabulary/course-in-contemporary-chinese-vocabulary-book-{chapter}/")
 
 mode = st.selectbox("Mode", MODES, index=MODES.index(st.session_state.mode))
 if mode != st.session_state.mode:
@@ -171,6 +172,8 @@ elif st.session_state.mode == "Pinyin":
     st.link_button("Get Help",f"https://dictionary.writtenchinese.com/#sk={big_text}&svt=pinyin")
 else:
     st.link_button("Get Help",f"https://dictionary.writtenchinese.com/#sk={big_text}&svt=pinyin")
+
+
 
 
 # better website https://zhongchinese.com/articles/vocabulary/course-in-contemporary-chinese-vocabulary-book-1/
