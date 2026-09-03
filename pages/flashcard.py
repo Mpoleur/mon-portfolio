@@ -272,7 +272,7 @@ if st.button(button_label, use_container_width=True):
     st.rerun()
 
 st.divider()
-if st.button("🔀 Shuffle"):
+if st.button("🔀 Shuffle"): 
     new_shuffle(len(df))
     st.rerun()
 
