@@ -195,7 +195,7 @@ with col_scheme:
 _scheme = _get_scheme(st.session_state.tone_scheme)
 _legend_html = "&nbsp;&nbsp;".join(
     f'<span style="color:{_scheme[num][1]}; font-weight:700;">●</span> {label}'
-    for num, label in [(1, "1st - -"), (2, "2nd - ´ "), (3, "3rd- V"), (4, "4th - `"), (5, "neutral")]
+    for num, label in [(1, "1st - ➖"), (2, "2nd - ↗️"), (3, "3rd- ✌🏻"), (4, "4th - ↘️"), (5, "⏺️")]
 )
 st.markdown(
     f'<div style="font-size:14px; color:#666; margin-bottom:6px;">Tones: {_legend_html}</div>',
