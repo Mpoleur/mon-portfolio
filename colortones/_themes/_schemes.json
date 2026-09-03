@@ -31,7 +31,7 @@
 		"high-color": [227, 0, 0],
 		"rising-color": [2, 179, 28],
 		"low-color": [21, 16, 240],
-		"falling-color": [137, 0, 191],
+		"falling-color": [255, 221, 0],
 		"neutral-color": [119, 119, 119]
 	},
 	"sinosplice": {
