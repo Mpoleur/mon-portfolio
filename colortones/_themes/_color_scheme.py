@@ -77,7 +77,7 @@ def load_color_scheme(
         "high-color": [255, 157, 18],
         "rising-color": [0, 190, 36],
         "low-color": [0, 87, 190],
-        "falling-color": [176, 111, 219],
+        "falling-color": [255, 221, 0],
         "neutral-color": [128, 128, 128],
     }
 
