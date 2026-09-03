@@ -28,10 +28,10 @@
 		"neutral-color": [160, 160, 160]
 	},
 	"pleco": {
-		"high-color": [227, 0, 0],
+		"high-color": [251, 177, 23],
 		"rising-color": [2, 179, 28],
 		"low-color": [21, 16, 240],
-		"falling-color": [251, 177, 23],
+		"falling-color": [227, 0, 0],
 		"neutral-color": [119, 119, 119]
 	},
 	"sinosplice": {
