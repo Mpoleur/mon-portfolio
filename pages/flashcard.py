@@ -1,6 +1,9 @@
 import streamlit as st
 import pandas as pd
 import random
+import functools
+import pypinyin
+import colortones
 
 #############################
 # Remove side bar
@@ -36,6 +39,73 @@ CSV_PATH = "voc.csv"
 MODES = ["English", "Pinyin", "Hanzi"]
 COL_FOR_MODE = {"English": "Anglais", "Pinyin": "Pinyin", "Hanzi": "Chinois"}
 
+#############################
+# Tone-coloring for Hanzi (via the "colortones" library)
+# https://github.com/travisgk/colortones
+#############################
+# colortones segments text with jieba + pypinyin and applies real tone-sandhi
+# rules (e.g. 不 / 一, third-tone sandhi) before assigning a color per
+# syllable. It's built for full sentences though, so it can raise on the
+# odd short/mixed-script vocab entry (e.g. "KTV", or characters missing
+# from its transcription table) -- in that case we fall back to a plain
+# per-character tone lookup with pypinyin so the app never crashes.
+
+SCHEME_NAMES = ["pleco", "default", "hanping", "mdbg", "dummit", "sinosplice"]
+
+
+@functools.lru_cache(maxsize=None)
+def _get_scheme(name):
+    return colortones.load_color_scheme(name)
+
+
+@functools.lru_cache(maxsize=None)
+def _fallback_char_tone(ch):
+    """Tone (1-4, 5=neutral) of a single character via plain pypinyin,
+    with no sandhi/context awareness. None if `ch` isn't Chinese."""
+    result = pypinyin.pinyin(
+        ch, style=pypinyin.Style.TONE3, heteronym=False, neutral_tone_with_five=True
+    )
+    if not result or not result[0]:
+        return None
+    syllable = result[0][0]
+    if syllable == ch:
+        return None  # not a recognized Chinese character
+    if syllable and syllable[-1].isdigit():
+        return int(syllable[-1])
+    return None
+
+
+@functools.lru_cache(maxsize=4096)
+def colorize_hanzi(text, scheme_name):
+    """Wraps each Chinese character of `text` in a <span> colored by tone,
+    using colortones' sandhi-aware analysis when it can parse the text,
+    and a simple per-character fallback otherwise."""
+    color_scheme = _get_scheme(scheme_name)
+
+    try:
+        paragraph = colortones.process_text(text)
+        pieces = []
+        for clause in paragraph.sentences:
+            for word in clause.words:
+                for syllable in word.syllables:
+                    hanzi = syllable["hanzi"]
+                    if syllable.is_punct():
+                        pieces.append(hanzi)
+                    else:
+                        color = color_scheme[syllable["inflection-num"]][1]
+                        pieces.append(f'<span style="color:{color}">{hanzi}</span>')
+        return "".join(pieces)
+    except Exception:
+        pieces = []
+        for ch in text:
+            tone = _fallback_char_tone(ch)
+            if tone in (1, 2, 3, 4, 5):
+                color = color_scheme[tone][1]
+                pieces.append(f'<span style="color:{color}">{ch}</span>')
+            else:
+                pieces.append(ch)
+        return "".join(pieces)
+
 
 @st.cache_data
 def load_vocab():
@@ -46,6 +116,8 @@ df_all = load_vocab()
 
 if "mode" not in st.session_state:
     st.session_state.mode = "English"
+if "tone_scheme" not in st.session_state:
+    st.session_state.tone_scheme = "pleco"
 
 
 def new_shuffle(n):
@@ -107,10 +179,28 @@ with st.expander("Choose your lessons", expanded=False):
     else:
         pass
 
-mode = st.selectbox("Mode", MODES, index=MODES.index(st.session_state.mode))
-if mode != st.session_state.mode:
-    st.session_state.mode = mode
-    st.session_state.revealed = False
+col_mode, col_scheme = st.columns(2)
+with col_mode:
+    mode = st.selectbox("Mode", MODES, index=MODES.index(st.session_state.mode))
+    if mode != st.session_state.mode:
+        st.session_state.mode = mode
+        st.session_state.revealed = False
+with col_scheme:
+    tone_scheme = st.selectbox(
+        "Tone colors", SCHEME_NAMES, index=SCHEME_NAMES.index(st.session_state.tone_scheme)
+    )
+    if tone_scheme != st.session_state.tone_scheme:
+        st.session_state.tone_scheme = tone_scheme
+
+_scheme = _get_scheme(st.session_state.tone_scheme)
+_legend_html = "&nbsp;&nbsp;".join(
+    f'<span style="color:{_scheme[num][1]}; font-weight:700;">●</span> {label}'
+    for num, label in [(1, "1st"), (2, "2nd"), (3, "3rd"), (4, "4th"), (5, "neutral")]
+)
+st.markdown(
+    f'<div style="font-size:14px; color:#666; margin-bottom:6px;">Tones: {_legend_html}</div>',
+    unsafe_allow_html=True,
+)
 
 # --- Dataframe filtré selon la sélection ---
 df = df_all[df_all["Chapter"].isin(chapter)].reset_index(drop=True)
@@ -138,9 +228,22 @@ elif st.session_state.mode == "Pinyin":
 else:
     big_col, small_col = "Chinois", "Pinyin"
 
-front_text = str(word[front_col])
-big_text = str(word[big_col])
-small_text = str(word[small_col])
+
+def _display_text(col_name):
+    """Return the cell text, tone-colored when it's the Hanzi column."""
+    raw = str(word[col_name])
+    if col_name == "Chinois":
+        return colorize_hanzi(raw, st.session_state.tone_scheme)
+    return raw
+
+
+front_text = _display_text(front_col)
+big_text = _display_text(big_col)
+small_text = _display_text(small_col)
+
+# Plain (uncolored) hanzi text, used for the "Get Help" dictionary link below.
+plain_front_text = str(word[front_col])
+plain_big_text = str(word[big_col])
 
 
 if not st.session_state.revealed:
@@ -174,11 +277,11 @@ if st.button("🔀 Shuffle"):
     st.rerun()
 
 if st.session_state.mode == "Hanzi":
-    st.link_button("Get Help",f"https://dictionary.writtenchinese.com/#sk={front_text}&svt=pinyin")
+    st.link_button("Get Help",f"https://dictionary.writtenchinese.com/#sk={plain_front_text}&svt=pinyin")
 elif st.session_state.mode == "Pinyin":
-    st.link_button("Get Help",f"https://dictionary.writtenchinese.com/#sk={big_text}&svt=pinyin")
+    st.link_button("Get Help",f"https://dictionary.writtenchinese.com/#sk={plain_big_text}&svt=pinyin")
 else:
-    st.link_button("Get Help",f"https://dictionary.writtenchinese.com/#sk={big_text}&svt=pinyin")
+    st.link_button("Get Help",f"https://dictionary.writtenchinese.com/#sk={plain_big_text}&svt=pinyin")
 
 
 
