@@ -3,7 +3,7 @@
 		"high-color": [255, 157, 18],
 		"rising-color": [0, 190, 36],
 		"low-color": [0, 87, 190],
-		"falling-color": [255, 221, 0],
+		"falling-color": [255, 232, 124],
 		"neutral-color": [128, 128, 128]
 	},
 	"dummit": {
@@ -31,7 +31,7 @@
 		"high-color": [227, 0, 0],
 		"rising-color": [2, 179, 28],
 		"low-color": [21, 16, 240],
-		"falling-color": [255, 221, 0],
+		"falling-color": [255, 232, 124],
 		"neutral-color": [119, 119, 119]
 	},
 	"sinosplice": {
