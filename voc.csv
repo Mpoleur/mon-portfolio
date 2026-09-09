@@ -338,25 +338,25 @@ KTV,KTV,karaoke (from “Karaoke Television”),1-2,7
 黃色,huángsè,yellow,1-2,10
 芒果,mángguǒ,mango,1-2,10
 給,gěi,to give,1-2,10
-塊,kuài,measure word for pieces of food (e.g., meat, cake),1-2,10
+塊,kuài,measure word for pieces of food,1-2,10
 香,xiāng,fragrant,1-2,10
 甜,tián,sweet (taste),1-2,10
 紅色,hóngsè,red,1-2,10
 西瓜,xīguā,watermelon,1-2,10
 吧,ba,sentence-final particle for guessing,1-2,10
-對,duì,correct, right,1-2,10
+對,duì,correct / right,1-2,10
 以前,yǐqián,before,1-2,10
 機會,jīhuì,opportunity,1-2,10
 請,qǐng,to treat sb to sth,1-2,10
-吃吃看,chīchīkàn,to have a taste, try it, taste,1-2,10
+吃吃看,chīchīkàn,to have a taste / try it / taste,1-2,10
 拍,pāi,to take (pictures),1-2,10
-笑,xiào,to laugh, to smile,1-2,10
+笑,xiào,to laugh / to smile,1-2,10
 開心,kāixīn,happy,1-2,10
-穿,chuān,to wear, to put on,1-2,10
+穿,chuān,to wear / to put on,1-2,10
 衣服,yīfú,clothes,1-2,10
 旅館,lǚguǎn,hotel,1-2,10
 太太,tàitai,wife,1-2,10
-男,nán,boy-, male-,1-2,10
+男,nán,boy- / male-,1-2,10
 矮,ǎi,short (height),1-2,10
 高,gāo,tall,1-2,10
 弟弟,dìdi,younger brother,1-2,10
@@ -368,6 +368,46 @@ KTV,KTV,karaoke (from “Karaoke Television”),1-2,7
 住,zhù,to stay,1-2,10
 上個月,shàng ge yuè,last month,1-2,10
 這些,zhèxiē,these,1-2,10
+租,zū,to rent,1-2,11
+房東,fángdōng,landlord,1-2,11
+客廳,kètīng,living room,1-2,11
+廚房,chúfáng,kitchen,1-2,11
+左邊,zuǒbiān,left (side),1-2,11
+右邊,yòubiān,right (side),1-2,11
+浴室,yùshì,bathroom,1-2,11
+超市,chāoshì,supermarket,1-2,11
+走路,zǒulù,to walk,1-2,11
+分鐘,fēnzhōng,measure word for minutes,1-2,11
+就,jiù,only, merely,1-2,11
+到,dào,arrive,1-2,11
+間,jiān,measure word for houses - rooms - ...,1-2,11
+空,kōng,vacant / empty,1-2,11
+房間,fángjiān,room,1-2,11
+套房,tàofáng,suite,1-2,11
+回去,huíqù,to go back / to return,1-2,11
+想,xiǎng,to think,1-2,11
+再,zài,and then,1-2,11
+電話,diànhuà,telephone,1-2,11
+給,gěi,to,1-2,11
+林,Lín,Chinese last name,1-2,11
+打電話,dǎ diànhuà,to make a phone call,1-2,11
+喂,wéi,a particle used in addressing people, especially over the phone,1-2,11
+房租,fángzū,rent (for a room or a house),1-2,11
+已經,yǐjīng,already,1-2,11
+習慣,xíguàn,to get settled down, to get used to,1-2,11
+問題,wèntí,problem, question,1-2,11
+熱水器,rèshuǐqì,water heater,1-2,11
+好像,hǎoxiàng,to seem to be / to appear to be (often used to take the edge off of a comment),1-2,11
+會,huì,will,1-2,11
+等,děng,to wait for,1-2,11
+那,nà,then / in that case,1-2,11
+裝,zhuāng,to install,1-2,11
+不過,búguò,however / but,1-2,11
+付,fù,to pay,1-2,11
+收到,shōudào,to receive,1-2,11
+不好意思,bùhǎo yìsi,sorry,1-2,11
+沒關係,méi guānxi,Not a problem.,1-2,11
+有線電視,yǒuxiàn diànshì,cable TV,1-2,11
 我,wǒ,I / me,101,x
 你,nǐ,you,101,x
 他,tā,he / him,101,x
