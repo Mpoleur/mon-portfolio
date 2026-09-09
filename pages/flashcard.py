@@ -160,7 +160,7 @@ st.markdown(
 st.title("🀄 Flashcards")
 
 #default_books = ["1-1"]
-default_chap = ['5']
+default_chap = ['10']
 books = sorted(df_all["Books"].unique())
 chapters = sorted(
     df_all["Chapter"].unique(),
