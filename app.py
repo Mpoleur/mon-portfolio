@@ -42,7 +42,7 @@ pages = [
     "pages/comparator.py",
     "pages/dices.py",
     "pages/flashcard.py",
-    "pages/comparator.py"
+    "pages/portfoliox.py"
 ]
 
 clicked = clickable_images(
